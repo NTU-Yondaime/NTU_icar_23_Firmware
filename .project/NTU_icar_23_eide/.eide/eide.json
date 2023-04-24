@@ -1,0 +1,528 @@
+{
+  "name": "NTU_icar_23_eide",
+  "type": "ARM",
+  "dependenceList": [],
+  "srcDirs": [
+    ".eide/deps",
+    "../../Includes",
+    "../../Sources"
+  ],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "Devices",
+        "files": [],
+        "folders": [
+          {
+            "name": "board",
+            "files": [
+              {
+                "path": "../../Device/board/board.c"
+              },
+              {
+                "path": "../../Device/board/clock_config.c"
+              },
+              {
+                "path": "../../Device/board/pin_mux.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "startup",
+            "files": [
+              {
+                "path": "../../Device/startup/arm/startup_MIMXRT1064.s"
+              },
+              {
+                "path": "../../Device/startup/arm/system_MIMXRT1064.c"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      },
+      {
+        "name": "Drivers",
+        "files": [],
+        "folders": [
+          {
+            "name": "fsl",
+            "files": [
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_adc_etc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_adc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_aipstz.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_aoi.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_bee.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_cache.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_clock.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_cmp.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_common.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_csi_camera_adapter.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_csi.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_dcdc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_dcp.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_dmamux.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_elcdif.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_enc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_enet.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_ewm.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexcan.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_i2c_master.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_i2s_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_i2s.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_spi_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_spi.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_uart_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio_uart.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexio.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexram.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_flexspi.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_gpc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_gpio.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_gpt.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_kpp.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpi2c_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpi2c_freertos.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpi2c.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpspi_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpspi_freertos.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpspi.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpuart_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpuart_freertos.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_lpuart.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_pit.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_pmu.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_pwm.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_pxp.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_qtmr.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_rtwdog.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_sai_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_sai.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_sccb.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_semc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_snvs_hp.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_snvs_lp.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_spdif_edma.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_spdif.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_src.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_tempmon.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_trng.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_tsc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_usdhc.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_wdog.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_xbara.c"
+              },
+              {
+                "path": "../../Drivers/MIMXRT1064/fsl_xbarb.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "utils",
+            "files": [
+              {
+                "path": "../../Drivers/utilities/fsl_assert.c"
+              },
+              {
+                "path": "../../Drivers/utilities/fsl_debug_console.c"
+              },
+              {
+                "path": "../../Drivers/utilities/fsl_io.c"
+              },
+              {
+                "path": "../../Drivers/utilities/fsl_log.c"
+              },
+              {
+                "path": "../../Drivers/utilities/fsl_str.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "xip",
+            "files": [
+              {
+                "path": "../../Drivers/xip/evkmimxrt1064_flexspi_nor_config.c"
+              },
+              {
+                "path": "../../Drivers/xip/evkmimxrt1064_sdram_ini_dcd.c"
+              },
+              {
+                "path": "../../Drivers/xip/fsl_flexspi_nor_boot.c"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      },
+      {
+        "name": "Libraries",
+        "files": [],
+        "folders": [
+          {
+            "name": "LQRT1064",
+            "files": [
+              {
+                "path": "../../Libraries/LQRT1064/ANO_DT.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/ICM20602_SOFTSPI.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_12864SPI.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_9AX.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_ADC.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_Camera.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_CSI.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_DMA.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_Encoder.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_FLASH.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_FlexCAN.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_GPIO.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_GPT.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_ICM20602.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_IIC.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_KEY.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_LED.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_MPU6050.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_MT9V034M.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_OV7725M.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_PIT.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_PWM.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_QTMR.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_Rtwdog.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_SDCard.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_SGP18T.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_SOFTIIC.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_SPI.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_SYSTICK.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_Tempmon.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_TRNG.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_UART_DMA.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_UART.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_Ultrasonic.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_VL53.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_W25Q128.c"
+              },
+              {
+                "path": "../../Libraries/LQRT1064/LQ_WDog.c"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      }
+    ]
+  },
+  "outDir": "build",
+  "deviceName": null,
+  "packDir": null,
+  "miscInfo": {
+    "uid": "1d571d0caa03fc69168f178ceb062187"
+  },
+  "targets": {
+    "Debug": {
+      "excludeList": [
+        "<virtual_root>/Drivers/fsl/fsl_lpspi_freertos.c",
+        "<virtual_root>/Drivers/fsl/fsl_lpuart_freertos.c",
+        "<virtual_root>/Drivers/fsl/fsl_lpi2c_freertos.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_Camera.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_GPT.c",
+        "<virtual_root>/Libraries/LQRT1064/ICM20602_SOFTSPI.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_12864SPI.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_FlexCAN.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_MT9V034M.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_OV7725M.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_SGP18T.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_SOFTIIC.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_Tempmon.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_Ultrasonic.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_VL53.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_W25Q128.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_SDCard.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_MPU6050.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_ICM20602.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_9AX.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_CSI.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_FLASH.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_ADC.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_QTMR.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_TRNG.c"
+      ],
+      "toolchain": "AC5",
+      "compileConfig": {
+        "cpuType": "Cortex-M7",
+        "floatingPointHardware": "double",
+        "useCustomScatterFile": true,
+        "scatterFilePath": "../linker/MIMXRT1064xxxxx_flexspi_nor.scf",
+        "storageLayout": {
+          "RAM": [
+            {
+              "tag": "IRAM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x20000000",
+                "size": "0x5000"
+              },
+              "isChecked": true,
+              "noInit": false
+            }
+          ],
+          "ROM": [
+            {
+              "tag": "IROM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x08000000",
+                "size": "0x10000"
+              },
+              "isChecked": true,
+              "isStartup": true
+            }
+          ]
+        },
+        "options": "null"
+      },
+      "uploader": "JLink",
+      "uploadConfig": {
+        "bin": "",
+        "baseAddr": "",
+        "cpuInfo": {
+          "vendor": "null",
+          "cpuName": "null"
+        },
+        "proType": 1,
+        "speed": 8000,
+        "otherCmds": ""
+      },
+      "uploadConfigMap": {},
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          ".eide/deps",
+          "../../Device/startup/arm",
+          "../../Includes",
+          "../../Device",
+          "../../Device/CMSIS/Include",
+          "../../Drivers/xip",
+          "../../Drivers/utilities",
+          "../../Drivers/MIMXRT1064",
+          "../../Libraries/LQRT1064",
+          "../../Drivers",
+          "../../Device/board"
+        ],
+        "libList": [],
+        "sourceDirList": [],
+        "defineList": [
+          "XIP_EXTERNAL_FLASH=1",
+          "XIP_BOOT_HEADER_ENABLE=1",
+          "DEBUG",
+          "CPU_MIMXRT1064DVL6A",
+          "PRINTF_FLOAT_ENABLE=0",
+          "SCANF_FLOAT_ENABLE=0",
+          "PRINTF_ADVANCED_ENABLE=0",
+          "SCANF_ADVANCED_ENABLE=0"
+        ]
+      }
+    }
+  },
+  "version": "3.3"
+}
