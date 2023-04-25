@@ -46,7 +46,7 @@ LPUART1_RX ------ 管脚L14
 #include "LQ_GPIO.h"
 #include "LQ_GPIO_Cfg.h"
 #include "LQ_Encoder.h"
-
+#include "delay.h"
 #include "fifo.h"
 #include "stdio.h"
 /* 中断优先级组 */
@@ -56,41 +56,21 @@ LPUART1_RX ------ 管脚L14
 #define NVIC_Group3 0x04
 #define NVIC_Group4 0x03
 
-#define UART_INDEX (LPUART1)   // ?? UART_1
-#define UART_BAUDRATE (115200) // ?? 115200
+#define UART_INDEX (LPUART1)
+#define UART_BAUDRATE (115200)
 
-uint8_t uart_get_data[64]; // ?????????
-uint8_t fifo_get_data[64]; // fifo ???????
+uint8_t uart_get_data[64];
+uint8_t fifo_get_data[64];
 
-uint8_t get_data = 0;		  // ??????
-uint32_t fifo_data_count = 0; // fifo ????
+uint8_t get_data = 0;
+uint32_t fifo_data_count = 0;
+uint8_t gpio_status;
 
 fifo_struct uart_data_fifo;
 
-uint8_t gpio_status;
-/**
- * @brief    不精确延时
- *
- * @param    无
- *
- * @return   无
- *
- * @note     无
- *
- * @example  delayms(100);
- *
- * @date     2019/4/22 星期一
- */
-void delayms(uint16_t ms)
+void delayms(int ms)
 {
-	volatile uint32_t i = 0;
-	while (ms--)
-	{
-		for (i = 0; i < 2000; ++i)
-		{
-			__asm("NOP"); /* delay */
-		}
-	}
+	system_delay_ms(ms);
 }
 
 /*!
@@ -104,23 +84,18 @@ void delayms(uint16_t ms)
  * @note     单片机与外设相连的管脚就有可能被外设模块拉高导致启动失败
  * @note     因此使用一个管脚作为外设模块电源开关，当单片机启动后，将C10置为高电平，打开外设电源
  *
- * @see
  *
- * @date     2019/9/12 星期四
  */
 void POWER_ENABLE(void)
 {
 	LQ_PinInit(H10, PIN_MODE_OUTPUT, 1);
-	delayms(200);
+	delayms(10);
 }
 
-/*!
- * @brief Main function
- */
 int main(void)
 {
-	int speed, angle=10;
-	short velocity;
+	int speed, angle = 10;
+	short v1, v2, v3 = 0;
 	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
 	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
 	BOARD_InitPins();		  /* 串口管脚初始化     */
@@ -156,7 +131,7 @@ int main(void)
 			fifo_read_buffer(&uart_data_fifo, fifo_get_data, &fifo_data_count, FIFO_READ_AND_CLEAN);
 			sscanf(fifo_get_data, "%d,%d", &speed, &angle);
 			// printf("speed:%d,angle:%d,dir:%d\n\r", speed, angle, dir);
-			if (speed>0)
+			if (speed > 0)
 			{
 				LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmB, speed);
 				LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmA, DUTY_MAX);
@@ -168,7 +143,7 @@ int main(void)
 			}
 			LQ_SetServoDty(angle);
 		}
-		delayms(20);
+		system_delay_ms(20);
 	}
 }
 
