@@ -96,6 +96,7 @@ int main(void)
 {
 	int speed, angle = 10;
 	short v1, v2, v3 = 0;
+	short velocity;
 	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
 	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
 	BOARD_InitPins();		  /* 串口管脚初始化     */
@@ -143,7 +144,8 @@ int main(void)
 			}
 			LQ_SetServoDty(angle);
 		}
-		system_delay_ms(20);
+		system_delay_ms(5000);
+		printf("5s......\n");
 	}
 }
 
