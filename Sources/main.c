@@ -145,7 +145,7 @@ int main(void)
 			LQ_SetServoDty(angle);
 		}
 		system_delay_ms(5000);
-		printf("5s......\n");
+		
 	}
 }
 
