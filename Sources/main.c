@@ -49,6 +49,9 @@ LPUART1_RX ------ 管脚L14
 #include "delay.h"
 #include "fifo.h"
 #include "stdio.h"
+#include "coeff.h"
+#include "LQ_UART.h"
+#include "LQ_PIT.h"
 /* 中断优先级组 */
 #define NVIC_Group0 0x07
 #define NVIC_Group1 0x06
@@ -58,7 +61,6 @@ LPUART1_RX ------ 管脚L14
 
 #define UART_INDEX (LPUART1)
 #define UART_BAUDRATE (115200)
-#define V_k 139.35225
 
 uint8_t uart_get_data[64];
 uint8_t fifo_get_data[64];
@@ -67,40 +69,23 @@ uint8_t get_data = 0;
 uint32_t fifo_data_count = 0;
 uint8_t gpio_status;
 
-
 fifo_struct uart_data_fifo;
-
 
 void delayms(int ms)
 {
 	system_delay_ms(ms);
 }
 
-/*!
- * @brief    打开外设电源
- *
- * @param
- *
- * @return
- *
- * @note     IMXRT系列单片机上电时管脚不能为高电平，如果外设模块先上电，
- * @note     单片机与外设相连的管脚就有可能被外设模块拉高导致启动失败
- * @note     因此使用一个管脚作为外设模块电源开关，当单片机启动后，将C10置为高电平，打开外设电源
- *
- *
- */
+
 void POWER_ENABLE(void)
 {
 	LQ_PinInit(H10, PIN_MODE_OUTPUT, 1);
 	delayms(10);
 }
-
+double v_raw;
 int main(void)
 {
 	int speed, angle = 10;
-	short v1, v2, v3 = 0;
-	short velocity;
-	double V;
 	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
 	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
 	BOARD_InitPins();		  /* 串口管脚初始化     */
@@ -120,17 +105,17 @@ int main(void)
 	LQ_UART_Init(LPUART1, 115200);
 	EnableIRQ(LPUART1_IRQn); // 使能LPUART1中断
 	// LQ_UART_Init(LPUART8, 115200);
+	PIT_InitConfig(kPIT_Chnl_1, 1000000); // 定时器中断
 	LQ_PWM_Init(PWM2, kPWM_Module_1, kPWM_PwmB, 1000);
 	LQ_PWM_Init(PWM2, kPWM_Module_1, kPWM_PwmA, 1000);
 	LQ_PWM_Init(PWM2, kPWM_Module_3, kPWM_PwmA_B, 50); // M3 M4
 	LQ_ENC_Init(ENC4, true);
 
 	fifo_init(&uart_data_fifo, FIFO_DATA_8BIT, uart_get_data, 64);
+
 	while (1)
 	{
-		velocity = (int16_t)ENC_GetPositionDifferenceValue(ENC4);
-		V=velocity;
-		printf("%f\n\r", V/V_k);
+		printf("%f\n\r", v_raw / V_k_5ms);
 		fifo_data_count = fifo_used(&uart_data_fifo);
 		if (fifo_data_count != 0)
 		{
@@ -149,8 +134,8 @@ int main(void)
 			}
 			LQ_SetServoDty(angle);
 		}
-		system_delay_ms(20);
-		}
+		system_delay_ms(5);
+	}
 }
 
 uint8_t uart_query_byte(uint8_t *dat)
@@ -170,4 +155,13 @@ void uart_rx_interrupt_handler(void)
 	//    get_data = uart_read_byte(UART_INDEX);
 	uart_query_byte(&get_data);
 	fifo_write_buffer(&uart_data_fifo, &get_data, 1);
+}
+
+void pit_handler(void)
+{
+	// **_raw 从传感器得到的原始数据
+	// **_f 完成滤波
+	// **_p 估计值
+	// **_k 系数
+	v_raw = (int16_t)ENC_GetPositionDifferenceValue(ENC4);
 }

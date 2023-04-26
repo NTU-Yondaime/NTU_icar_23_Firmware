@@ -450,7 +450,8 @@
         "<virtual_root>/Libraries/LQRT1064/LQ_FLASH.c",
         "<virtual_root>/Libraries/LQRT1064/LQ_ADC.c",
         "<virtual_root>/Libraries/LQRT1064/LQ_QTMR.c",
-        "<virtual_root>/Libraries/LQRT1064/LQ_TRNG.c"
+        "<virtual_root>/Libraries/LQRT1064/LQ_TRNG.c",
+        "../../Sources/isr.c"
       ],
       "toolchain": "AC5",
       "compileConfig": {
