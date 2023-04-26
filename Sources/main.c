@@ -144,9 +144,8 @@ int main(void)
 			}
 			LQ_SetServoDty(angle);
 		}
-		system_delay_ms(5000);
-		
-	}
+		system_delay_ms(20);
+		}
 }
 
 uint8_t uart_query_byte(uint8_t *dat)
