@@ -58,6 +58,7 @@ LPUART1_RX ------ 管脚L14
 
 #define UART_INDEX (LPUART1)
 #define UART_BAUDRATE (115200)
+#define V_k 139.35225
 
 uint8_t uart_get_data[64];
 uint8_t fifo_get_data[64];
@@ -66,7 +67,9 @@ uint8_t get_data = 0;
 uint32_t fifo_data_count = 0;
 uint8_t gpio_status;
 
+
 fifo_struct uart_data_fifo;
+
 
 void delayms(int ms)
 {
@@ -97,6 +100,7 @@ int main(void)
 	int speed, angle = 10;
 	short v1, v2, v3 = 0;
 	short velocity;
+	double V;
 	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
 	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
 	BOARD_InitPins();		  /* 串口管脚初始化     */
@@ -125,7 +129,8 @@ int main(void)
 	while (1)
 	{
 		velocity = (int16_t)ENC_GetPositionDifferenceValue(ENC4);
-		printf("%d\n\r", velocity);
+		V=velocity;
+		printf("%f\n\r", V/V_k);
 		fifo_data_count = fifo_used(&uart_data_fifo);
 		if (fifo_data_count != 0)
 		{
