@@ -105,7 +105,7 @@ int main(void)
 	LQ_UART_Init(LPUART1, 115200);
 	EnableIRQ(LPUART1_IRQn); // 使能LPUART1中断
 	// LQ_UART_Init(LPUART8, 115200);
-	PIT_InitConfig(kPIT_Chnl_1, 1000000); // 定时器中断
+	PIT_InitConfig(kPIT_Chnl_1, 20000); // 定时器中断
 	LQ_PWM_Init(PWM2, kPWM_Module_1, kPWM_PwmB, 1000);
 	LQ_PWM_Init(PWM2, kPWM_Module_1, kPWM_PwmA, 1000);
 	LQ_PWM_Init(PWM2, kPWM_Module_3, kPWM_PwmA_B, 50); // M3 M4
@@ -115,7 +115,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("%f\n\r", v_raw / V_k_5ms);
+		printf("%f\n\r", v_raw/ V_k_20ms );
 		fifo_data_count = fifo_used(&uart_data_fifo);
 		if (fifo_data_count != 0)
 		{
@@ -134,7 +134,7 @@ int main(void)
 			}
 			LQ_SetServoDty(angle);
 		}
-		system_delay_ms(5);
+		system_delay_ms(20);
 	}
 }
 
