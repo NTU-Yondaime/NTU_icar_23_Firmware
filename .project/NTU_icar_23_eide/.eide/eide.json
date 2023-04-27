@@ -31,11 +31,6 @@
             "folders": []
           },
           {
-            "name": "DSP",
-            "files": [],
-            "folders": []
-          },
-          {
             "name": "startup",
             "files": [
               {
@@ -451,6 +446,22 @@
         "<virtual_root>/Libraries/LQRT1064/LQ_ADC.c",
         "<virtual_root>/Libraries/LQRT1064/LQ_QTMR.c",
         "<virtual_root>/Libraries/LQRT1064/LQ_TRNG.c",
+        "../../Includes/zf_delay/zf_driver_adc.c",
+        "../../Includes/zf_delay/zf_driver_csi.c",
+        "../../Includes/zf_delay/zf_driver_exti.c",
+        "../../Includes/zf_delay/zf_driver_encoder.c",
+        "../../Includes/zf/zf_common_debug.c",
+        "../../Includes/zf/zf_common_fifo.c",
+        "../../Includes/zf/zf_common_font.c",
+        "../../Includes/zf/zf_common_function.c",
+        "../../Includes/zf/zf_common_vector.c",
+        "../../Includes/zf_delay/zf_driver_flash.c",
+        "<virtual_root>/Libraries/LQRT1064/ANO_DT.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_SPI.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_DMA.c",
+        "../../Includes/zf/zf_common_interrupt.c",
+        "../../Includes/zf/zf_common_clock.c",
+        "../../Includes/zf_delay/zf_driver_delay.c",
         "../../Sources/isr.c"
       ],
       "toolchain": "AC5",
@@ -496,7 +507,7 @@
           "cpuName": "MIMXRT1064xxx6A"
         },
         "proType": 1,
-        "speed": 12000,
+        "speed": 8000,
         "otherCmds": ""
       },
       "uploadConfigMap": {},
@@ -513,7 +524,9 @@
           "../../Drivers/MIMXRT1064",
           "../../Libraries/LQRT1064",
           "../../Drivers",
-          "../../Device/board"
+          "../../Device/board",
+          "../../Includes/zf_delay",
+          "../../Includes/zf"
         ],
         "libList": [],
         "sourceDirList": [],
