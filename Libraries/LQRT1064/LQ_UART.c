@@ -27,7 +27,7 @@ QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ*/
 #include "board.h"
 #include "stdio.h"	
 #include "LQ_UART.h"
-#include "LQ_LED.h"
+// #include "LQ_LED.h"
 /* 声明外部延时函数 */
 extern void delayms(uint16_t ms);
 
@@ -189,59 +189,6 @@ void LQ_UART_Init(LPUART_Type *base, uint32_t bound)
 }
 
 
-
-
-
-
-/**
-  * @brief    串口测试函数
-  *
-  * @param    
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/6 星期四
-  */
-void Test_UART(void)
-{
-    LED_Init();   
-    
-    LQ_UART_Init(LPUART1, 115200);   
-    //优先级配置 抢占优先级1  子优先级2   越小优先级越高  抢占优先级可打断别的中断
-    NVIC_SetPriority(LPUART1_IRQn,NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1,2));
-    EnableIRQ(LPUART1_IRQn);	                            //使能LPUART1中断
-
-	LQ_UART_Init(LPUART8, 115200); 
-	
-    delayms(100);
-    printf("\r\n龙邱串口测试例程\r\n");
-    printf("串口模块波特率:\n");
-    printf("LPUART1 init: 115200!\n");
-
-	uint8_t a = 'a';
-	uint8_t buff[10] = {'a','b','c','d','E','F','G'};
-    while(1)
-    {
-        
-        UART_PutChar(LPUART1, a);           //打印字符a
-        delayms(100);
-        
-        UART_PutBuff(LPUART1, buff, 10);    //打印 字符串
-		UART_PutBuff(LPUART8, buff, 10);    //打印 字符串
-        delayms(100);
-        
-        printf("龙邱串口打印测试\n");
-        
-        UART_PutStr(LPUART1,"UART_PutStr打印测试\n");
-        UART_PutStr(LPUART8,"UART_PutStr打印测试\n");
-        delayms(10000);
-        LED_ColorReverse(blue);
-    }  
-}
 
 /**
   * @brief    串口引脚复用初始化
