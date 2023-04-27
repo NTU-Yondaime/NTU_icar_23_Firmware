@@ -461,8 +461,7 @@
         "<virtual_root>/Libraries/LQRT1064/LQ_DMA.c",
         "../../Includes/zf/zf_common_interrupt.c",
         "../../Includes/zf/zf_common_clock.c",
-        "../../Includes/zf_delay/zf_driver_delay.c"
-        "<virtual_root>/Libraries/LQRT1064/LQ_TRNG.c",
+        "../../Includes/zf_delay/zf_driver_delay.c",
         "../../Sources/isr.c"
       ],
       "toolchain": "AC5",

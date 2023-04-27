@@ -71,29 +71,28 @@ uint8_t gpio_status;
 
 fifo_struct uart_data_fifo;
 
-#define KP 1.0 // 比例系数
-#define KI 0.5 // 积分系数
-#define KD 0.2 // 微分系数
+#define KP 1.0		 // 比例系数
+#define KI 0.5		 // 积分系数
+#define KD 0.2		 // 微分系数
 #define MAX_PWM 8000 // PWM输出的最大值
 #define MIN_PWM 2000 // PWM输出的最小值
 
 float pid_control(float setpoint, float feedback)
 {
-    static float last_error = 0.0; // 上一次误差
-    static float integral = 0.0; // 积分值
-    float error = setpoint - feedback; // 当前误差
-    float derivative = error - last_error; // 当前误差与上一次误差的差值
-    float output = KP * error + KI * integral + KD * derivative; // PID控制器输出
-    last_error = error; // 更新上一次误差
-    integral += error; // 更新积分值
-    return output;
+	static float last_error = 0.0;								 // 上一次误差
+	static float integral = 0.0;								 // 积分值
+	float error = setpoint - feedback;							 // 当前误差
+	float derivative = error - last_error;						 // 当前误差与上一次误差的差值
+	float output = KP * error + KI * integral + KD * derivative; // PID控制器输出
+	last_error = error;											 // 更新上一次误差
+	integral += error;											 // 更新积分值
+	return output;
 }
 
 void delayms(int ms)
 {
 	system_delay_ms(ms);
 }
-
 
 void POWER_ENABLE(void)
 {
@@ -103,7 +102,8 @@ void POWER_ENABLE(void)
 double v_raw;
 int main(void)
 {
-	int speed, angle = 10;
+	int speed_target, angle_target = 10;
+	double speed_c;
 	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
 	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
 	BOARD_InitPins();		  /* 串口管脚初始化     */
@@ -133,26 +133,37 @@ int main(void)
 
 	while (1)
 	{
-		printf("%f\n\r", v_raw/ V_k_20ms );
+		double v = v_raw / V_k_20ms;
+		printf("%f\n\r", v);
 		fifo_data_count = fifo_used(&uart_data_fifo);
 		if (fifo_data_count != 0)
 		{
 			fifo_read_buffer(&uart_data_fifo, fifo_get_data, &fifo_data_count, FIFO_READ_AND_CLEAN);
-			sscanf(fifo_get_data, "%d,%d", &speed, &angle);
+			sscanf(fifo_get_data, "%d,%d", &speed_target, &angle_target);
 			// printf("speed:%d,angle:%d,dir:%d\n\r", speed, angle, dir);
-			if (speed > 0)
-			{
-				LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmB, speed);
-				LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmA, DUTY_MAX);
-			}
-			else
-			{
-				LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmA, -speed);
-				LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmB, DUTY_MAX);
-			}
-			LQ_SetServoDty(angle);
 		}
 		system_delay_ms(20);
+
+		speed_c += pid_control(speed_target, speed_target - v);
+		if (speed_c > MAX_PWM)
+		{
+			speed_c = MAX_PWM;
+		}
+		else if (speed_c < MIN_PWM)
+		{
+			speed_c = MIN_PWM;
+		}
+		if (speed_c > 0)
+		{
+			LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmB, speed_c);
+			LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmA, DUTY_MAX);
+		}
+		else
+		{
+			LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmA, -speed_c);
+			LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmB, DUTY_MAX);
+		}
+		LQ_SetServoDty(angle_target);
 	}
 }
 
@@ -181,5 +192,6 @@ void pit_handler(void)
 	// **_f 完成滤波
 	// **_p 估计值
 	// **_k 系数
+	// **_c 控制量
 	v_raw = (int16_t)ENC_GetPositionDifferenceValue(ENC4);
 }
