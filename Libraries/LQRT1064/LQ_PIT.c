@@ -13,9 +13,6 @@
 #include "LQ_GPIO_Cfg.h"
 #include "LQ_PIT.h"
 
-
-
-
 /**
   * @brief    PIT定时器初始化
   *
