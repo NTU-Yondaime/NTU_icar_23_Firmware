@@ -1,20 +1,4 @@
-/*---------------------------------------------
-【平    台】龙邱i.MX RT1064核心板-智能车板
-【编    写】LQ-005
-【E-mail  】chiusir@163.com
-【软件版本】V1.0
-【最后更新】2019年3月12日
-【dev.env.】IAR8.30.1及以上版本
-【Target 】 i.MX RT1064
-【Crystal】 24.000Mhz
-【ARM PLL】 1200MHz
-【SYS PLL】 600MHz
-【USB PLL】 480MHz
-【相关信息参考下列地址】
-【网    站】http://www.lqist.cn
-【淘宝店铺】http://shop36265907.taobao.com
----------------------------------------------------------
-LED灯
+/* LED灯
 
 GPIO2_IO23  -------->  管脚B12   ----- >  核心板G灯
 GPIO3_IO26  -------->  管脚A7    ----- >  核心板R灯
@@ -34,30 +18,7 @@ GPIO5_I000 ------ 管脚L6   ----- >  核心板按键WUP
 LPUART1_TX ------ 管脚K14
 LPUART1_RX ------ 管脚L14
 --------------------------------------------------------*/
-
-#include "fsl_device_registers.h"
-#include "fsl_debug_console.h"
-#include "board.h"
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "fsl_lpuart.h"
-#include "LQ_UART.h"
-#include "LQ_PWM.h"
-#include "LQ_GPIO.h"
-#include "LQ_GPIO_Cfg.h"
-#include "LQ_Encoder.h"
-#include "delay.h"
-#include "fifo.h"
-#include "stdio.h"
-#include "coeff.h"
-#include "LQ_UART.h"
-#include "LQ_PIT.h"
-/* 中断优先级组 */
-#define NVIC_Group0 0x07
-#define NVIC_Group1 0x06
-#define NVIC_Group2 0x05
-#define NVIC_Group3 0x04
-#define NVIC_Group4 0x03
+#include "headfiles.h"
 
 #define UART_INDEX (LPUART1)
 #define UART_BAUDRATE (115200)
@@ -71,53 +32,17 @@ uint8_t gpio_status;
 
 fifo_struct uart_data_fifo;
 
-#define KP 1.0		 // 比例系数
-#define KI 0.5		 // 积分系数
-#define KD 0.2		 // 微分系数
 #define MAX_PWM 8000 // PWM输出的最大值
 #define MIN_PWM 2000 // PWM输出的最小值
 
-float pid_control(float setpoint, float feedback)
-{
-	static float last_error = 0.0;								 // 上一次误差
-	static float integral = 0.0;								 // 积分值
-	float error = setpoint - feedback;							 // 当前误差
-	float derivative = error - last_error;						 // 当前误差与上一次误差的差值
-	float output = KP * error + KI * integral + KD * derivative; // PID控制器输出
-	last_error = error;											 // 更新上一次误差
-	integral += error;											 // 更新积分值
-	return output;
-}
 
-void delayms(int ms)
-{
-	system_delay_ms(ms);
-}
-
-void POWER_ENABLE(void)
-{
-	LQ_PinInit(H10, PIN_MODE_OUTPUT, 1);
-	delayms(10);
-}
 double v_raw;
-int main(void)
+struct pid_coeffs vPID = {V_kP, V_kI, V_kD};
+void main(void)
 {
 	int speed_target, angle_target = 10;
 	double speed_c;
-	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
-	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
-	BOARD_InitPins();		  /* 串口管脚初始化     */
-	BOARD_InitDebugConsole(); /* 初始化串口         */
-	/*设置中断优先级组  0: 0个抢占优先级16位个子优先级
-	 1: 2个抢占优先级 8个子优先级
-	 2: 4个抢占优先级 4个子优先级
-	 3: 8个抢占优先级 2个子优先级
-	 4: 16个抢占优先级 0个子优先级
-	 */
-	/* 配置优先级组 2: 4个抢占优先级 4个子优先级 */
-	NVIC_SetPriorityGrouping(NVIC_Group2);
-	POWER_ENABLE();
-
+	
 	// 优先级配置 抢占优先级1  子优先级2   越小优先级越高  抢占优先级可打断别的中断
 	NVIC_SetPriority(LPUART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 1, 2));
 	LQ_UART_Init(LPUART1, 115200);
@@ -144,7 +69,7 @@ int main(void)
 		}
 		system_delay_ms(20);
 
-		speed_c += pid_control(speed_target, speed_target - v);
+		speed_c = incrPID(speed_target, v, &vPID);
 		if (speed_c > MAX_PWM)
 		{
 			speed_c = MAX_PWM;

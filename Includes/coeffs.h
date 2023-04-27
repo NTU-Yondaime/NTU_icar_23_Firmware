@@ -1,6 +1,9 @@
 #ifndef _COEFF_H_
 #define _COEFF_H_
-// ±àÂëÆ÷Âö³å×ªÃ×Ã¿Ãë
+// ç³»æ•°
+#define V_kP (1)
+#define V_kI (1)
+#define V_kD (1)
 #define V_k_20ms (139.35225)
 #define V_k_10ms (69.676125)
 #define V_k_1ms (6.9676125)

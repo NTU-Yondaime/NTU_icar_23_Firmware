@@ -462,7 +462,11 @@
         "../../Includes/zf/zf_common_interrupt.c",
         "../../Includes/zf/zf_common_clock.c",
         "../../Includes/zf_delay/zf_driver_delay.c",
-        "../../Sources/isr.c"
+        "../../Sources/isr.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_KEY.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_LED.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_UART_DMA.c",
+        "<virtual_root>/Libraries/LQRT1064/LQ_WDog.c"
       ],
       "toolchain": "AC5",
       "compileConfig": {
