@@ -68,6 +68,24 @@ uint8_t gpio_status;
 
 fifo_struct uart_data_fifo;
 
+#define KP 1.0 // 比例系数
+#define KI 0.5 // 积分系数
+#define KD 0.2 // 微分系数
+#define MAX_PWM 8000 // PWM输出的最大值
+#define MIN_PWM 2000 // PWM输出的最小值
+
+float pid_control(float setpoint, float feedback)
+{
+    static float last_error = 0.0; // 上一次误差
+    static float integral = 0.0; // 积分值
+    float error = setpoint - feedback; // 当前误差
+    float derivative = error - last_error; // 当前误差与上一次误差的差值
+    float output = KP * error + KI * integral + KD * derivative; // PID控制器输出
+    last_error = error; // 更新上一次误差
+    integral += error; // 更新积分值
+    return output;
+}
+
 void delayms(int ms)
 {
 	system_delay_ms(ms);
@@ -144,8 +162,7 @@ int main(void)
 			}
 			LQ_SetServoDty(angle);
 		}
-		system_delay_ms(5000);
-		printf("5s......\n");
+		system_delay_ms(10);
 	}
 }
 
