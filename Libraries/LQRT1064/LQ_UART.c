@@ -1,19 +1,19 @@
 /*LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
-¡¾Æ½    Ì¨¡¿ÁúÇñi.MX RT1052ºËĞÄ°å-ÖÇÄÜ³µ°å
-¡¾±à    Ğ´¡¿LQ-005
-¡¾E-mail  ¡¿chiusir@163.com
-¡¾Èí¼ş°æ±¾¡¿V1.0£¬ÁúÇñ¿ªÔ´´úÂë£¬½ö¹©²Î¿¼£¬ºó¹û×Ô¸º
-¡¾×îºó¸üĞÂ¡¿2018Äê10ÔÂ18ÈÕ
-¡¾Ïà¹ØĞÅÏ¢²Î¿¼ÏÂÁĞµØÖ·¡¿
-¡¾Íø    Õ¾¡¿http://www.lqist.cn
-¡¾ÌÔ±¦µêÆÌ¡¿http://shop36265907.taobao.com
+ã€å¹³    å°ã€‘é¾™é‚±i.MX RT1052æ ¸å¿ƒæ¿-æ™ºèƒ½è½¦æ¿
+ã€ç¼–    å†™ã€‘LQ-005
+ã€E-mail  ã€‘chiusir@163.com
+ã€è½¯ä»¶ç‰ˆæœ¬ã€‘V1.0ï¼Œé¾™é‚±å¼€æºä»£ç ï¼Œä»…ä¾›å‚è€ƒï¼Œåæœè‡ªè´Ÿ
+ã€æœ€åæ›´æ–°ã€‘2018å¹´10æœˆ18æ—¥
+ã€ç›¸å…³ä¿¡æ¯å‚è€ƒä¸‹åˆ—åœ°å€ã€‘
+ã€ç½‘    ç«™ã€‘http://www.lqist.cn
+ã€æ·˜å®åº—é“ºã€‘http://shop36265907.taobao.com
 ------------------------------------------------
-¡¾dev.env.¡¿IAR8.20.1¼°ÒÔÉÏ°æ±¾
-¡¾Target ¡¿ i.MX RT1052
-¡¾Crystal¡¿ 24.000Mhz
-¡¾ARM PLL¡¿ 1200MHz
-¡¾SYS PLL¡¿ 528MHz
-¡¾USB PLL¡¿ 480MHz
+ã€dev.env.ã€‘IAR8.20.1åŠä»¥ä¸Šç‰ˆæœ¬
+ã€Target ã€‘ i.MX RT1052
+ã€Crystalã€‘ 24.000Mhz
+ã€ARM PLLã€‘ 1200MHz
+ã€SYS PLLã€‘ 528MHz
+ã€USB PLLã€‘ 480MHz
 ================================================
 QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ*/
 #include "fsl_device_registers.h"
@@ -25,106 +25,102 @@ QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ*/
 #include "fsl_gpio.h"
 #include "fsl_lpuart.h"
 #include "board.h"
-#include "stdio.h"	
+#include "stdio.h"
 #include "LQ_UART.h"
 // #include "LQ_LED.h"
-/* ÉùÃ÷Íâ²¿ÑÓÊ±º¯Êı */
+/* å£°æ˜å¤–éƒ¨å»¶æ—¶å‡½æ•° */
 extern void delayms(uint16_t ms);
 
-
-//¼ÓÈëÒÔÏÂ´úÂë,Ö§³Öprintfº¯Êı,¶ø²»ĞèÒªÑ¡Ôñuse MicroLIB	  
-//IAR£¬ĞèÒªÔÚoptions -> C/C++compiler -> Preprocessor Ìí¼Óºê¶¨Òå _DLIB_FILE_DESCRIPTOR
+// åŠ å…¥ä»¥ä¸‹ä»£ç ,æ”¯æŒprintfå‡½æ•°,è€Œä¸éœ€è¦é€‰æ‹©use MicroLIB
+// IARï¼Œéœ€è¦åœ¨options -> C/C++compiler -> Preprocessor æ·»åŠ å®å®šä¹‰ _DLIB_FILE_DESCRIPTOR
 #if 1
-//#pragma import(__use_no_semihosting)             
-//±ê×¼¿âĞèÒªµÄÖ§³Öº¯Êı                 
-struct __FILE 
-{ 
-	int handle; 
-}; 
+// #pragma import(__use_no_semihosting)
+// æ ‡å‡†åº“éœ€è¦çš„æ”¯æŒå‡½æ•°
+struct __FILE
+{
+    int handle;
+};
 
-FILE __stdout;       
-//¶¨Òå_sys_exit()ÒÔ±ÜÃâÊ¹ÓÃ°ëÖ÷»úÄ£Ê½    
-void _sys_exit(int x) 
-{ 
-	x = x; 
-} 
-//ÖØ¶¨Òåfputcº¯Êı 
-int fputc(int ch, FILE *f)
-{ 	
-    /* ÕâÀï printf Ê¹ÓÃ LPUART1 ¿ÉÒÔ×ÔĞĞĞŞ¸Ä */
-	UART_PutChar(LPUART1, (uint8_t)ch);	
-	return ch;
+FILE __stdout;
+// å®šä¹‰_sys_exit()ä»¥é¿å…ä½¿ç”¨åŠä¸»æœºæ¨¡å¼
+void _sys_exit(int x)
+{
+    x = x;
 }
-#endif 
-
-
+// é‡å®šä¹‰fputcå‡½æ•°
+int fputc(int ch, FILE *f)
+{
+    /* è¿™é‡Œ printf ä½¿ç”¨ LPUART1 å¯ä»¥è‡ªè¡Œä¿®æ”¹ */
+    UART_PutChar(LPUART1, (uint8_t)ch);
+    return ch;
+}
+#endif
 
 /**
-  * @brief    ·¢ËÍÒ»¸ö×Ö·û
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    data  £º ·¢ËÍµÄ×Ö·û
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  UART_PutChar(LPUART1, char);  //´®¿Ú1  ·¢ËÍchar
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    å‘é€ä¸€ä¸ªå­—ç¬¦
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    data  ï¼š å‘é€çš„å­—ç¬¦
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example  UART_PutChar(LPUART1, char);  //ä¸²å£1  å‘é€char
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 inline void UART_PutChar(LPUART_Type *base, uint8_t data)
 {
-    /* µÈ´ıbase->STATÎª¿Õ */
-    while (!(base->STAT & LPUART_STAT_TDRE_MASK));
-    
+    /* ç­‰å¾…base->STATä¸ºç©º */
+    while (!(base->STAT & LPUART_STAT_TDRE_MASK))
+        ;
+
     base->DATA = data;
 }
 
-
 /**
-  * @brief    ·¢ËÍÒ»¸öÊı×é
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    data  £º ·¢ËÍµÄ×Ö·û
-  * @param    length£º ·¢ËÍµÄ×Ö·û³¤¶È
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  UART_PutBuff(LPUART1, buff, 10);//´®¿Ú1£¬·¢ËÍÒ»¸ö³¤¶ÈÎª10µØÖ·ÎªbuffµÄÊı×é
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
-void UART_PutBuff(LPUART_Type *base, uint8_t * buff, uint32_t length)
+ * @brief    å‘é€ä¸€ä¸ªæ•°ç»„
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    data  ï¼š å‘é€çš„å­—ç¬¦
+ * @param    lengthï¼š å‘é€çš„å­—ç¬¦é•¿åº¦
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example  UART_PutBuff(LPUART1, buff, 10);//ä¸²å£1ï¼Œå‘é€ä¸€ä¸ªé•¿åº¦ä¸º10åœ°å€ä¸ºbuffçš„æ•°ç»„
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
+void UART_PutBuff(LPUART_Type *base, uint8_t *buff, uint32_t length)
 {
     while (length--)
     {
-        /* µÈ´ıbase->STATÎª¿Õ */
-        while (!(base->STAT & LPUART_STAT_TDRE_MASK));
-        
+        /* ç­‰å¾…base->STATä¸ºç©º */
+        while (!(base->STAT & LPUART_STAT_TDRE_MASK))
+            ;
+
         base->DATA = *(buff++);
     }
 }
 
-
-
 /**
-  * @brief    ·¢ËÍÒ»¸ö×Ö·û´®
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    data  £º ·¢ËÍµÄ×Ö·û
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  UART_PutBuff(LPUART1, buff, 10);//´®¿Ú1£¬·¢ËÍÒ»¸ö³¤¶ÈÎª10µØÖ·ÎªbuffµÄÊı×é
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
-void UART_PutStr(LPUART_Type *base, uint8_t * str)
+ * @brief    å‘é€ä¸€ä¸ªå­—ç¬¦ä¸²
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    data  ï¼š å‘é€çš„å­—ç¬¦
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example  UART_PutBuff(LPUART1, buff, 10);//ä¸²å£1ï¼Œå‘é€ä¸€ä¸ªé•¿åº¦ä¸º10åœ°å€ä¸ºbuffçš„æ•°ç»„
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
+void UART_PutStr(LPUART_Type *base, uint8_t *str)
 {
     while (*str)
     {
@@ -132,29 +128,27 @@ void UART_PutStr(LPUART_Type *base, uint8_t * str)
     }
 }
 
-
-
 /**
-  * @brief    ´®¿Ú³õÊ¼»¯
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    bound £º ´®¿Ú²¨ÌØÂÊ
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    ä¸²å£åˆå§‹åŒ–
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    bound ï¼š ä¸²å£æ³¢ç‰¹ç‡
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 void LQ_UART_Init(LPUART_Type *base, uint32_t bound)
 {
-    /* ³õÊ¼»¯´®¿Ú¶ÔÓ¦µÄ¹Ü½Å ¶ÔÓ¦¹Ü½ÅÔÚLQ_UART.h ÖĞÍ¨¹ıºê¶¨ÒåÈ·¶¨ */
+    /* åˆå§‹åŒ–ä¸²å£å¯¹åº”çš„ç®¡è„š å¯¹åº”ç®¡è„šåœ¨LQ_UART.h ä¸­é€šè¿‡å®å®šä¹‰ç¡®å®š */
     UART_PinInit(base);
-    
+
     lpuart_config_t config;
-    
+
     /*
      * config.baudRate_Bps = 115200U;
      * config.parityMode = kLPUART_ParityDisabled;
@@ -165,313 +159,309 @@ void LQ_UART_Init(LPUART_Type *base, uint32_t bound)
      * config.enableRx = false;
      */
     LPUART_GetDefaultConfig(&config);
-    
-    /* ÉèÖÃ²¨ÌØÂÊ */
+
+    /* è®¾ç½®æ³¢ç‰¹ç‡ */
     config.baudRate_Bps = bound;
-    
-    /* ÉèÖÃÆæÅ¼Ğ£Ñé */
+
+    /* è®¾ç½®å¥‡å¶æ ¡éªŒ */
     config.parityMode = kLPUART_ParityDisabled;
-    
-    /* ÉèÖÃÍ£Ö¹Î» */
+
+    /* è®¾ç½®åœæ­¢ä½ */
     config.stopBitCount = kLPUART_OneStopBit;
-    
-    /* ÉèÖÃÊı¾İÎ»¿í */
+
+    /* è®¾ç½®æ•°æ®ä½å®½ */
     config.dataBitsCount = kLPUART_EightDataBits;
-    
-    /* Ê¹ÄÜÊÕ·¢ */
+
+    /* ä½¿èƒ½æ”¶å‘ */
     config.enableTx = true;
     config.enableRx = true;
 
     LPUART_Init(base, &config, BOARD_DebugConsoleSrcFreq());
-    
-    /* Ê¹ÄÜ½ÓÊÕÖĞ¶Ï */
+
+    /* ä½¿èƒ½æ¥æ”¶ä¸­æ–­ */
     LPUART_EnableInterrupts(base, kLPUART_RxDataRegFullInterruptEnable);
 }
 
-
-
 /**
-  * @brief    ´®¿ÚÒı½Å¸´ÓÃ³õÊ¼»¯
-  *
-  * @param    base£º LPUART1 - LPUART8
-  *
-  * @return   
-  *
-  * @note     ÄÚ²¿µ÷ÓÃµÄ£¬½öÓÃÀ´ÉèÖÃ´®¿Ú¹Ü½Å¸´ÓÃµÄ
-  *
-  * @example  
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    ä¸²å£å¼•è„šå¤ç”¨åˆå§‹åŒ–
+ *
+ * @param    baseï¼š LPUART1 - LPUART8
+ *
+ * @return
+ *
+ * @note     å†…éƒ¨è°ƒç”¨çš„ï¼Œä»…ç”¨æ¥è®¾ç½®ä¸²å£ç®¡è„šå¤ç”¨çš„
+ *
+ * @example
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 void UART_PinInit(LPUART_Type *base)
-{	
-	/* ¿ªÊ±ÖÓ */
-	CLOCK_EnableClock(kCLOCK_Iomuxc);
-	
-    if(base == LPUART1)
+{
+    /* å¼€æ—¶é’Ÿ */
+    CLOCK_EnableClock(kCLOCK_Iomuxc);
+
+    if (base == LPUART1)
     {
-        if(LP_UART1_RX == L14)
+        if (LP_UART1_RX == L14)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_13_LPUART1_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_13_LPUART1_RX, 0U);
         }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART1_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART1_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART1_TX == K14)
+        if (LP_UART1_TX == K14)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_12_LPUART1_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_12_LPUART1_TX, 0U);
         }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART1_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART1_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif    
+#endif
     }
-    else if(base == LPUART2)
+    else if (base == LPUART2)
     {
-		if(LP_UART2_RX == M12)
+        if (LP_UART2_RX == M12)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_03_LPUART2_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_03_LPUART2_RX, 0U);
         }
-		else if(LP_UART2_RX == P4)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_10_LPUART2_RX,0U); 
-		}
+        else if (LP_UART2_RX == P4)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_10_LPUART2_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART2_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART2_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART2_TX == L11)
+        if (LP_UART2_TX == L11)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_02_LPUART2_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_02_LPUART2_TX, 0U);
         }
-		else if(LP_UART2_TX == P5)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_11_LPUART2_TX,0U);
-		}
+        else if (LP_UART2_TX == P5)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_11_LPUART2_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART6_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART6_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif    
-         
+#endif
     }
-    else if(base == LPUART3)
+    else if (base == LPUART3)
     {
-        if(LP_UART3_RX == B6)
+        if (LP_UART3_RX == B6)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_14_LPUART3_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_14_LPUART3_RX, 0U);
         }
-		else if(LP_UART3_RX == C9)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_B0_09_LPUART3_RX,0U); 
-		}
-		else if(LP_UART3_RX == K10)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_07_LPUART3_RX,0U); 
-		}
+        else if (LP_UART3_RX == C9)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_B0_09_LPUART3_RX, 0U);
+        }
+        else if (LP_UART3_RX == K10)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_07_LPUART3_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART3_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART3_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART3_TX == A6)
+        if (LP_UART3_TX == A6)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_13_LPUART3_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_13_LPUART3_TX, 0U);
         }
-		else if(LP_UART3_TX == B9)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_B0_08_LPUART3_TX,0U);
-		}
-		else if(LP_UART3_TX == C12)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_06_LPUART3_TX,0U);
-		}
+        else if (LP_UART3_TX == B9)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_B0_08_LPUART3_TX, 0U);
+        }
+        else if (LP_UART3_TX == C12)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_06_LPUART3_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART3_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART3_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif   
+#endif
     }
-    else if(base == LPUART4)
+    else if (base == LPUART4)
     {
-        if(LP_UART4_RX == A3)
+        if (LP_UART4_RX == A3)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_20_LPUART4_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_20_LPUART4_RX, 0U);
         }
-		else if(LP_UART4_RX == B11)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_B1_01_LPUART4_RX,0U); 
-		}
-		else if(LP_UART4_RX == M5)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_01_LPUART4_RX,0U); 
-		}
+        else if (LP_UART4_RX == B11)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_B1_01_LPUART4_RX, 0U);
+        }
+        else if (LP_UART4_RX == M5)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_01_LPUART4_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART4_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART4_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART4_TX == A11)
+        if (LP_UART4_TX == A11)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_B1_00_LPUART4_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_B1_00_LPUART4_TX, 0U);
         }
-		else if(LP_UART4_TX == B4)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_19_LPUART4_TX,0U);
-		}
-		else if(LP_UART4_TX == L5)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_00_LPUART4_TX,0U);
-		}
+        else if (LP_UART4_TX == B4)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_19_LPUART4_TX, 0U);
+        }
+        else if (LP_UART4_TX == L5)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_00_LPUART4_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART4_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART4_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif 
+#endif
     }
-    else if(base == LPUART5)
+    else if (base == LPUART5)
     {
-        if(LP_UART5_RX == D3)
+        if (LP_UART5_RX == D3)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_24_LPUART5_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_24_LPUART5_RX, 0U);
         }
-		else if(LP_UART5_RX == D14)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_B1_13_LPUART5_RX,0U); 
-		}
+        else if (LP_UART5_RX == D14)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_B1_13_LPUART5_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART5_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART5_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART5_TX == D13)
+        if (LP_UART5_TX == D13)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_B1_12_LPUART5_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_B1_12_LPUART5_TX, 0U);
         }
-		else if(LP_UART5_TX == G2)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_23_LPUART5_TX,0U);
-		}
+        else if (LP_UART5_TX == G2)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_23_LPUART5_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART6_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART6_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif    
+#endif
     }
-    else if(base == LPUART6)
+    else if (base == LPUART6)
     {
-        if(LP_UART6_RX == B3)
+        if (LP_UART6_RX == B3)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_26_LPUART6_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_26_LPUART6_RX, 0U);
         }
-		else if(LP_UART6_RX == G11)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_03_LPUART6_RX,0U); 
-		}
+        else if (LP_UART6_RX == G11)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_03_LPUART6_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART6_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART6_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART6_TX == D2)
+        if (LP_UART6_TX == D2)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_25_LPUART6_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_25_LPUART6_TX, 0U);
         }
-		else if(LP_UART6_TX == M11)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_02_LPUART6_TX,0U);
-		}
+        else if (LP_UART6_TX == M11)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B0_02_LPUART6_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART6_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART6_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif     
+#endif
     }
-    else if(base == LPUART7)
+    else if (base == LPUART7)
     {
-        if(LP_UART7_RX == D5)
+        if (LP_UART7_RX == D5)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_32_LPUART7_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_32_LPUART7_RX, 0U);
         }
-		else if(LP_UART7_RX == N4)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_09_LPUART7_RX,0U); 
-		}
+        else if (LP_UART7_RX == N4)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_09_LPUART7_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART7_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART7_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART7_TX == C5)
+        if (LP_UART7_TX == C5)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_31_LPUART7_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_31_LPUART7_TX, 0U);
         }
-		else if(LP_UART7_TX == P3)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_08_LPUART7_TX,0U);
-		}
+        else if (LP_UART7_TX == P3)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B1_08_LPUART7_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART7_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART7_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif  
+#endif
     }
-    else if(base == LPUART8)
+    else if (base == LPUART8)
     {
-        if(LP_UART8_RX == B7)
+        if (LP_UART8_RX == B7)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_39_LPUART8_RX,0U);   
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_39_LPUART8_RX, 0U);
         }
-		else if(LP_UART8_RX == J2)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B0_05_LPUART8_RX,0U); 
-		}
-		else if(LP_UART8_RX == J13)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_11_LPUART8_RX,0U); 
-		}
+        else if (LP_UART8_RX == J2)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B0_05_LPUART8_RX, 0U);
+        }
+        else if (LP_UART8_RX == J13)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_11_LPUART8_RX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART8_RX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART8_RX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
 #endif
-        if(LP_UART8_TX == D6)
+        if (LP_UART8_TX == D6)
         {
-            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_38_LPUART8_TX,0U);
+            IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_38_LPUART8_TX, 0U);
         }
-		else if(LP_UART8_TX == H2)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B0_04_LPUART8_TX,0U);
-		}
-		else if(LP_UART8_TX == L13)
-		{
-			IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_10_LPUART8_TX,0U);
-		}
+        else if (LP_UART8_TX == H2)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_SD_B0_04_LPUART8_TX, 0U);
+        }
+        else if (LP_UART8_TX == L13)
+        {
+            IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_10_LPUART8_TX, 0U);
+        }
 #ifdef DEBUG
         else
         {
-            PRINTF("LP_UART8_TX Òı½ÅÑ¡ÔñÓĞÎó.\r\n");
+            PRINTF("LP_UART8_TX å¼•è„šé€‰æ‹©æœ‰è¯¯.\r\n");
         }
-#endif 
+#endif
     }
 }
-

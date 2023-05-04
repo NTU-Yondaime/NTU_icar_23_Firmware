@@ -1,5 +1,5 @@
 #include "algorithms.h"
-float incrPID(float target, float feedback, struct pid_coeffs *coeffs)
+float incrPID(float target, float feedback, pid_coeffs_struct *coeffs)
 {
     float error = target - feedback;
     static float error_l1 = 0.0;

@@ -1,16 +1,15 @@
 /*-----------------------------------------------------------------
-PWM1, kPWM_Module_3, kPWM_PwmA   L5     µç»ú1½Ó¿Ú
-PWM1, kPWM_Module_3, kPWM_PwmB   M5     µç»ú1½Ó¿Ú
-PWM2, kPWM_Module_0, kPWM_PwmA   A8     µç»ú2½Ó¿Ú
-PWM2, kPWM_Module_0, kPWM_PwmB   A9     µç»ú2½Ó¿Ú
-PWM2, kPWM_Module_1, kPWM_PwmA   B9     µç»ú3½Ó¿Ú
-PWM2, kPWM_Module_1, kPWM_PwmB   C9     µç»ú3½Ó¿Ú
-PWM2, kPWM_Module_2, kPWM_PwmB   A10    µç»ú4½Ó¿Ú
-PWM1, kPWM_Module_1, kPWM_PwmA   J1     µç»ú4½Ó¿Ú
-PWM2, kPWM_Module_3, kPWM_PwmA   M3     ¶æ»ú½Ó¿Ú
-PWM2, kPWM_Module_3, kPWM_PwmB   M4     ¶æ»ú½Ó¿Ú
+PWM1, kPWM_Module_3, kPWM_PwmA   L5     ç”µæœº1æ¥å£
+PWM1, kPWM_Module_3, kPWM_PwmB   M5     ç”µæœº1æ¥å£
+PWM2, kPWM_Module_0, kPWM_PwmA   A8     ç”µæœº2æ¥å£
+PWM2, kPWM_Module_0, kPWM_PwmB   A9     ç”µæœº2æ¥å£
+PWM2, kPWM_Module_1, kPWM_PwmA   B9     ç”µæœº3æ¥å£
+PWM2, kPWM_Module_1, kPWM_PwmB   C9     ç”µæœº3æ¥å£
+PWM2, kPWM_Module_2, kPWM_PwmB   A10    ç”µæœº4æ¥å£
+PWM1, kPWM_Module_1, kPWM_PwmA   J1     ç”µæœº4æ¥å£
+PWM2, kPWM_Module_3, kPWM_PwmA   M3     èˆµæœºæ¥å£
+PWM2, kPWM_Module_3, kPWM_PwmB   M4     èˆµæœºæ¥å£
 --------------------------------------------------------------------*/
-#include "include.h"
 #include "LQ_PWM.h"
 #include "fsl_pwm.h"
 #include "fsl_debug_console.h"
@@ -23,36 +22,36 @@ PWM2, kPWM_Module_3, kPWM_PwmB   M4     ¶æ»ú½Ó¿Ú
 // #include "LQ_SGP18T.h"
 #include "stdio.h"
 
-/* ÉùÃ÷Íâ²¿ÑÓÊ±º¯Êı */
+/* å£°æ˜å¤–éƒ¨å»¶æ—¶å‡½æ•° */
 extern void delayms(uint16_t ms);
 
 /**
- * @brief    PWM¹¦ÄÜ³õÊ¼»¯
+ * @brief    PWMåŠŸèƒ½åˆå§‹åŒ–
  *
- * @param    base          £ºPWMÄ£¿é PWM1~PWM4
- * @param    subModule     £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é kPWM_Module_0 ~ kPWM_Module_3
- * @param    pwm_channels  £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é µÄÍ¨µÀ £º kPWM_PwmA ¡¢ kPWM_PwmB  ¡¢ kPWM_PwmA_B
- * @param    Frequency     £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿éµÄÆµÂÊ
+ * @param    base          ï¼šPWMæ¨¡å— PWM1~PWM4
+ * @param    subModule     ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— kPWM_Module_0 ~ kPWM_Module_3
+ * @param    pwm_channels  ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— çš„é€šé“ ï¼š kPWM_PwmA ã€ kPWM_PwmB  ã€ kPWM_PwmA_B
+ * @param    Frequency     ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å—çš„é¢‘ç‡
  *
  * @return
  *
- * @note     PWM Ê¹ÓÃ IPGÊ±ÖÓ  150M
+ * @note     PWM ä½¿ç”¨ IPGæ—¶é’Ÿ  150M
  *
  * @example
  *
- * @date     2019/5/23 ĞÇÆÚËÄ
+ * @date     2019/5/23 æ˜ŸæœŸå››
  */
 void LQ_PWM_Init(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwm_channels, uint16_t Frequency)
 {
 
-    // ¹Ü½Å¸´ÓÃÑ¡Ôñ
+    // ç®¡è„šå¤ç”¨é€‰æ‹©
     LQ_PWM_InitPins(base, subModule, pwm_channels);
 
-    uint32_t pwmSourceClockInHz; // PWMÊ±ÖÓÔ´
+    uint32_t pwmSourceClockInHz; // PWMæ—¶é’Ÿæº
     pwmSourceClockInHz = CLOCK_GetFreq(kCLOCK_IpgClk);
 
-    pwm_config_t pwmConfig; // PWM³õÊ¼»¯½á¹¹Ìå
-    /*pwmConfigÄ¬ÈÏ²ÎÊı
+    pwm_config_t pwmConfig; // PWMåˆå§‹åŒ–ç»“æ„ä½“
+    /*pwmConfigé»˜è®¤å‚æ•°
      * pwmConfig.enableDebugMode = false;
      * pwmConfig.enableWait = false;
      * pwmConfig.reloadSelect = kPWM_LocalReload;
@@ -64,15 +63,15 @@ void LQ_PWM_Init(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwm_c
      * pwmConfig.forceTrigger = kPWM_Force_Local;
      * pwmConfig.reloadFrequency = kPWM_LoadEveryOportunity;
      * pwmConfig.reloadLogic = kPWM_ReloadImmediate;
-     * pwmConfig.pairOperation = kPWM_Independent;        //PWMAºÍPWMB¶ÀÁ¢Êä³ö
+     * pwmConfig.pairOperation = kPWM_Independent;        //PWMAå’ŒPWMBç‹¬ç«‹è¾“å‡º
      */
-    PWM_GetDefaultConfig(&pwmConfig); // µÃµ½Ä¬ÈÏµÄPWM³õÊ¼»¯½á¹¹Ìå
+    PWM_GetDefaultConfig(&pwmConfig); // å¾—åˆ°é»˜è®¤çš„PWMåˆå§‹åŒ–ç»“æ„ä½“
 
-    pwmConfig.reloadLogic = kPWM_ReloadPwmFullCycle; // Ñ­»·Êä³ö
+    pwmConfig.reloadLogic = kPWM_ReloadPwmFullCycle; // å¾ªç¯è¾“å‡º
 
     pwmConfig.enableDebugMode = true;
 
-    /* ¼ÆËã×î¼Ñ·ÖÆµÏµÊı */
+    /* è®¡ç®—æœ€ä½³åˆ†é¢‘ç³»æ•° */
     uint32_t temp = pwmSourceClockInHz / Frequency;
     uint8_t div = 0;
     while (temp > 0xFFFF)
@@ -89,59 +88,59 @@ void LQ_PWM_Init(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwm_c
         PRINTF("PWM subModule %d initialization failed\n", subModule);
         return;
     }
-    base->SM[subModule].DISMAP[0] = 0; // ÆÁ±Î¹ÊÕÏ¼ì²â¹¦ÄÜ
+    base->SM[subModule].DISMAP[0] = 0; // å±è”½æ•…éšœæ£€æµ‹åŠŸèƒ½
 
-    pwm_signal_param_t pwmSignal[2]; // PWM×ÓÄ£¿é³õÊ¼»¯½á¹¹Ìå
+    pwm_signal_param_t pwmSignal[2]; // PWMå­æ¨¡å—åˆå§‹åŒ–ç»“æ„ä½“
     uint16_t deadTimeVal = 0;
     /* Set deadtime count, we set this to about 650ns */
-    //  deadTimeVal = ((uint64_t)pwmSourceClockInHz * 650) / 1000000000;//ËÀÇøÉè¶¨ ¶àÓÃÓÚÎŞË¢µç»úPWMAºÍPWMB»¥²¹Êä³öÊ±Ê¹ÓÃ
+    //  deadTimeVal = ((uint64_t)pwmSourceClockInHz * 650) / 1000000000;//æ­»åŒºè®¾å®š å¤šç”¨äºæ— åˆ·ç”µæœºPWMAå’ŒPWMBäº’è¡¥è¾“å‡ºæ—¶ä½¿ç”¨
 
-    pwmSignal[0].pwmChannel = kPWM_PwmA; // Ä¬ÈÏÊ¹ÓÃÍ¨µÀA
-    if (pwm_channels == kPWM_PwmB)       // Èç¹ûÊ¹ÓÃÍ¨µÀB
+    pwmSignal[0].pwmChannel = kPWM_PwmA; // é»˜è®¤ä½¿ç”¨é€šé“A
+    if (pwm_channels == kPWM_PwmB)       // å¦‚æœä½¿ç”¨é€šé“B
     {
-        pwmSignal[0].pwmChannel = kPWM_PwmB; // Ê¹ÓÃPWMB
+        pwmSignal[0].pwmChannel = kPWM_PwmB; // ä½¿ç”¨PWMB
     }
-    pwmSignal[0].level = kPWM_HighTrue;       // Êä³öµçÆ½Îª¸ßµçÆ½
-    pwmSignal[0].dutyCyclePercent = 0;        // ³õÊ¼Õ¼¿Õ±È 0%
-    pwmSignal[0].deadtimeValue = deadTimeVal; // ËÀÇøÊ±¼ä
+    pwmSignal[0].level = kPWM_HighTrue;       // è¾“å‡ºç”µå¹³ä¸ºé«˜ç”µå¹³
+    pwmSignal[0].dutyCyclePercent = 0;        // åˆå§‹å ç©ºæ¯” 0%
+    pwmSignal[0].deadtimeValue = deadTimeVal; // æ­»åŒºæ—¶é—´
 
-    /*µ±ABÁ½Í¨µÀÍ¬Ê±Ê¹ÓÃ ²ÅÓĞ×÷ÓÃ*/
-    pwmSignal[1].pwmChannel = kPWM_PwmB;      // Ê¹ÓÃPWMB
-    pwmSignal[1].level = kPWM_HighTrue;       // Êä³öµçÆ½Îª¸ßµçÆ½
-    pwmSignal[1].dutyCyclePercent = 0;        // ³õÊ¼Õ¼¿Õ±È 0%
-    pwmSignal[1].deadtimeValue = deadTimeVal; // ËÀÇøÊ±¼ä
+    /*å½“ABä¸¤é€šé“åŒæ—¶ä½¿ç”¨ æ‰æœ‰ä½œç”¨*/
+    pwmSignal[1].pwmChannel = kPWM_PwmB;      // ä½¿ç”¨PWMB
+    pwmSignal[1].level = kPWM_HighTrue;       // è¾“å‡ºç”µå¹³ä¸ºé«˜ç”µå¹³
+    pwmSignal[1].dutyCyclePercent = 0;        // åˆå§‹å ç©ºæ¯” 0%
+    pwmSignal[1].deadtimeValue = deadTimeVal; // æ­»åŒºæ—¶é—´
 
-    if (pwm_channels == kPWM_PwmA_B) // A BÁ½Í¨µÀÍ¬Ê±Ê¹ÓÃ
+    if (pwm_channels == kPWM_PwmA_B) // A Bä¸¤é€šé“åŒæ—¶ä½¿ç”¨
     {
-        /*ÉèÖÃpwmµÄÊ±ÖÓ = pwmSourceClockInHz£¬ÆµÂÊ = Frequency ¶ÔÆë·½Ê½ = kPWM_SignedCenterAligned£¬*/
+        /*è®¾ç½®pwmçš„æ—¶é’Ÿ = pwmSourceClockInHzï¼Œé¢‘ç‡ = Frequency å¯¹é½æ–¹å¼ = kPWM_SignedCenterAlignedï¼Œ*/
         PWM_SetupPwm(base, subModule, pwmSignal, 2, kPWM_SignedCenterAligned, Frequency, pwmSourceClockInHz);
     }
-    else // ½öÊ¹ÓÃA BÖĞµÄÒ»¸öÊ±
+    else // ä»…ä½¿ç”¨A Bä¸­çš„ä¸€ä¸ªæ—¶
     {
-        /*ÉèÖÃpwmµÄÊ±ÖÓ = pwmSourceClockInHz£¬ÆµÂÊ = Frequency ¶ÔÆë·½Ê½ = kPWM_SignedCenterAligned£¬*/
+        /*è®¾ç½®pwmçš„æ—¶é’Ÿ = pwmSourceClockInHzï¼Œé¢‘ç‡ = Frequency å¯¹é½æ–¹å¼ = kPWM_SignedCenterAlignedï¼Œ*/
         PWM_SetupPwm(base, subModule, pwmSignal, 1, kPWM_SignedCenterAligned, Frequency, pwmSourceClockInHz);
     }
 
-    PWM_SetPwmLdok(base, 1u << subModule, true); // ÉèÖÃpwmµÄ load okÎ»
+    PWM_SetPwmLdok(base, 1u << subModule, true); // è®¾ç½®pwmçš„ load okä½
 
-    PWM_StartTimer(base, 1u << subModule); // ¿ªÆô¶¨Ê±Æ÷
+    PWM_StartTimer(base, 1u << subModule); // å¼€å¯å®šæ—¶å™¨
 }
 
 /**
- * @brief    ÉèÖÃÕ¼¿Õ±È
+ * @brief    è®¾ç½®å ç©ºæ¯”
  *
- * @param    base          £ºPWMÄ£¿é PWM1~PWM4
- * @param    subModule     £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é kPWM_Module_0 ~ kPWM_Module_3
- * @param    pwm_channels  £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é µÄÍ¨µÀ £º kPWM_PwmA ¡¢ kPWM_PwmB  ¡¢ kPWM_PwmA_B
- * @param    duty          £ºÕ¼¿Õ±È*DUTY_MAX
+ * @param    base          ï¼šPWMæ¨¡å— PWM1~PWM4
+ * @param    subModule     ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— kPWM_Module_0 ~ kPWM_Module_3
+ * @param    pwm_channels  ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— çš„é€šé“ ï¼š kPWM_PwmA ã€ kPWM_PwmB  ã€ kPWM_PwmA_B
+ * @param    duty          ï¼šå ç©ºæ¯”*DUTY_MAX
  *
  * @return
  *
- * @note     Ä¬ÈÏ¶ÔÆë·½Ê½kPWM_SignedCenterAligned£¬ ¿ÉÒÔ×ÔĞĞĞŞ¸Ä
+ * @note     é»˜è®¤å¯¹é½æ–¹å¼kPWM_SignedCenterAlignedï¼Œ å¯ä»¥è‡ªè¡Œä¿®æ”¹
  *
  * @example
  *
- * @date     2019/5/23 ĞÇÆÚËÄ
+ * @date     2019/5/23 æ˜ŸæœŸå››
  */
 inline void LQ_PWM_SetDuty(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwm_channels, uint16_t duty)
 {
@@ -152,21 +151,21 @@ inline void LQ_PWM_SetDuty(PWM_Type *base, pwm_submodule_t subModule, pwm_channe
 }
 
 /**
- * @brief    Í¬Ê±ÉèÖÃ Ò»¸ö×ÓÄ£¿éµÄA ºÍ BÏà  ÓÃÕâ¸öº¯Êı
+ * @brief    åŒæ—¶è®¾ç½® ä¸€ä¸ªå­æ¨¡å—çš„A å’Œ Bç›¸  ç”¨è¿™ä¸ªå‡½æ•°
  *
- * @param    base          £ºPWMÄ£¿é PWM1~PWM4
- * @param    subModule     £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é kPWM_Module_0 ~ kPWM_Module_3
- * @param    pwm_channels  £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é µÄÍ¨µÀ £º kPWM_PwmA ¡¢ kPWM_PwmB  ¡¢ kPWM_PwmA_B
- * @param    duty          £ºÕ¼¿Õ±È*DUTY_MAX
+ * @param    base          ï¼šPWMæ¨¡å— PWM1~PWM4
+ * @param    subModule     ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— kPWM_Module_0 ~ kPWM_Module_3
+ * @param    pwm_channels  ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— çš„é€šé“ ï¼š kPWM_PwmA ã€ kPWM_PwmB  ã€ kPWM_PwmA_B
+ * @param    duty          ï¼šå ç©ºæ¯”*DUTY_MAX
  *
  * @return
  *
- * @note     Í¬Ê±ÉèÖÃ Ò»¸ö×ÓÄ£¿éµÄA ºÍ BÏà ¿ÉÒÔ ÓÃÕâ¸öº¯Êı
- * @note     Ä¬ÈÏ¶ÔÆë·½Ê½kPWM_SignedCenterAligned£¬ ¿ÉÒÔ×ÔĞĞĞŞ¸Ä
+ * @note     åŒæ—¶è®¾ç½® ä¸€ä¸ªå­æ¨¡å—çš„A å’Œ Bç›¸ å¯ä»¥ ç”¨è¿™ä¸ªå‡½æ•°
+ * @note     é»˜è®¤å¯¹é½æ–¹å¼kPWM_SignedCenterAlignedï¼Œ å¯ä»¥è‡ªè¡Œä¿®æ”¹
  *
  * @example
  *
- * @date     2019/5/23 ĞÇÆÚËÄ
+ * @date     2019/5/23 æ˜ŸæœŸå››
  */
 inline void LQ_PWMA_B_SetDuty(PWM_Type *base, pwm_submodule_t subModule, uint16_t dutyA, uint16_t dutyB)
 {
@@ -179,42 +178,42 @@ inline void LQ_PWMA_B_SetDuty(PWM_Type *base, pwm_submodule_t subModule, uint16_
 }
 
 /**
- * @brief    ÉèÖÃ¶æ»úÕ¼¿Õ±È
+ * @brief    è®¾ç½®èˆµæœºå ç©ºæ¯”
  *
- * @param    duty          £ºÕ¼¿Õ±È*DUTY_MAX
+ * @param    duty          ï¼šå ç©ºæ¯”*DUTY_MAX
  *
  * @return
  *
- * @note      ¶æ»úÖĞÖµ 1.5ms¸ßµçÆ½µÄPWM²¨    ÏŞ·ùÔÚ 1.3 - 1.7msÖ®¼ä
+ * @note      èˆµæœºä¸­å€¼ 1.5msé«˜ç”µå¹³çš„PWMæ³¢    é™å¹…åœ¨ 1.3 - 1.7msä¹‹é—´
  *
  * @example
  *
- * @date     2019/5/23 ĞÇÆÚËÄ
+ * @date     2019/5/23 æ˜ŸæœŸå››
  */
 inline void LQ_SetServoDty(uint16_t duty)
 {
     if (duty > 850)
-        duty = 850; // ÏŞ·ù£¬¿É×ÔĞĞĞŞ¸Ä
+        duty = 850; // é™å¹…ï¼Œå¯è‡ªè¡Œä¿®æ”¹
     if (duty < 650)
         duty = 650;
     LQ_PWMA_B_SetDuty(PWM2, kPWM_Module_3, duty, duty); // M3 M4
 }
 
 /**
-  * @brief    ÉèÖÃµç»úÕ¼¿Õ±È
+  * @brief    è®¾ç½®ç”µæœºå ç©ºæ¯”
   *
-  * @param    num£º 1£ºµç»ú1£º Ê¹ÓÃ L5  M5
-                    2£ºµç»ú2£º Ê¹ÓÃ A8  A9
-                    3£ºµç»ú3£º Ê¹ÓÃ B9  C9
-                    4£ºµç»ú4£º Ê¹ÓÃ A10 J1
+  * @param    numï¼š 1ï¼šç”µæœº1ï¼š ä½¿ç”¨ L5  M5
+                    2ï¼šç”µæœº2ï¼š ä½¿ç”¨ A8  A9
+                    3ï¼šç”µæœº3ï¼š ä½¿ç”¨ B9  C9
+                    4ï¼šç”µæœº4ï¼š ä½¿ç”¨ A10 J1
   *
   * @return
   *
-  * @note     µç»úÕı·´×ª¿ÉÒÔµ÷½Úµç»ú½ÓÏßµ÷Õû£¬Ò²¿ÉÒÔ¿ØÖÆPWMµ÷Õû  Èç¹ûµç»úÕı·´×ªºÍ³ÌĞòÖĞ¶¨ÒåµÄ²»Ò»Ñù£¬¿ÉÒÔ×ÔĞĞĞŞ¸Ä
+  * @note     ç”µæœºæ­£åè½¬å¯ä»¥è°ƒèŠ‚ç”µæœºæ¥çº¿è°ƒæ•´ï¼Œä¹Ÿå¯ä»¥æ§åˆ¶PWMè°ƒæ•´  å¦‚æœç”µæœºæ­£åè½¬å’Œç¨‹åºä¸­å®šä¹‰çš„ä¸ä¸€æ ·ï¼Œå¯ä»¥è‡ªè¡Œä¿®æ”¹
   *
   * @example
   *
-  * @date     2019/5/23 ĞÇÆÚËÄ
+  * @date     2019/5/23 æ˜ŸæœŸå››
   */
 inline void LQ_SetMotorDty(uint8_t num, short duty)
 {
@@ -270,24 +269,22 @@ inline void LQ_SetMotorDty(uint8_t num, short duty)
     }
 }
 
-
-
 /**
- * @brief    ¸Ä±äÕ¼¿Õ±È
+ * @brief    æ”¹å˜å ç©ºæ¯”
  *
- * @param    base       £ºPWMÄ£¿é PWM1~PWM4
- * @param    subModule  £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é kPWM_Module_0 ~ kPWM_Module_3
- * @param    pwmSignal  £ºkPWM_PwmA/kPWM_PwmB
- * @param    currPwmMode£º¶ÔÆë·½Ê½
- * @param    duty       £ºÕ¼¿Õ±È*DUTY_MAX
+ * @param    base       ï¼šPWMæ¨¡å— PWM1~PWM4
+ * @param    subModule  ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— kPWM_Module_0 ~ kPWM_Module_3
+ * @param    pwmSignal  ï¼škPWM_PwmA/kPWM_PwmB
+ * @param    currPwmModeï¼šå¯¹é½æ–¹å¼
+ * @param    duty       ï¼šå ç©ºæ¯”*DUTY_MAX
  *
- * @return   ÎŞ
+ * @return   æ— 
  *
  * @note
  *
  * @example
  *
- * @date     2019/5/23 ĞÇÆÚËÄ
+ * @date     2019/5/23 æ˜ŸæœŸå››
  */
 void PWM_UpdateDuty(PWM_Type *base,
                     pwm_submodule_t subModule,
@@ -305,7 +302,7 @@ void PWM_UpdateDuty(PWM_Type *base,
         modulo = base->SM[subModule].VAL1;
         pulseCnt = modulo * 2;
         /* Calculate pulse width */
-        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // Õ¼¿Õ±È =  duty / DUTY_MAX ¿ÉĞŞ¸Ä
+        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // å ç©ºæ¯” =  duty / DUTY_MAX å¯ä¿®æ”¹
 
         /* Setup the PWM dutycycle */
         if (pwmSignal == kPWM_PwmA)
@@ -322,7 +319,7 @@ void PWM_UpdateDuty(PWM_Type *base,
     case kPWM_CenterAligned:
         pulseCnt = base->SM[subModule].VAL1;
         /* Calculate pulse width */
-        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // Õ¼¿Õ±È =  duty / DUTY_MAX ¿ÉĞŞ¸Ä
+        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // å ç©ºæ¯” =  duty / DUTY_MAX å¯ä¿®æ”¹
 
         /* Setup the PWM dutycycle */
         if (pwmSignal == kPWM_PwmA)
@@ -340,7 +337,7 @@ void PWM_UpdateDuty(PWM_Type *base,
         modulo = base->SM[subModule].VAL1;
         pulseCnt = modulo * 2;
         /* Calculate pulse width */
-        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // Õ¼¿Õ±È =  duty / DUTY_MAX ¿ÉĞŞ¸Ä
+        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // å ç©ºæ¯” =  duty / DUTY_MAX å¯ä¿®æ”¹
 
         /* Setup the PWM dutycycle */
         if (pwmSignal == kPWM_PwmA)
@@ -357,7 +354,7 @@ void PWM_UpdateDuty(PWM_Type *base,
     case kPWM_EdgeAligned:
         pulseCnt = base->SM[subModule].VAL1;
         /* Calculate pulse width */
-        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // Õ¼¿Õ±È =  duty / DUTY_MAX ¿ÉĞŞ¸Ä
+        pwmHighPulse = (pulseCnt * duty) / DUTY_MAX; // å ç©ºæ¯” =  duty / DUTY_MAX å¯ä¿®æ”¹
 
         /* Setup the PWM dutycycle */
         if (pwmSignal == kPWM_PwmA)
@@ -377,29 +374,29 @@ void PWM_UpdateDuty(PWM_Type *base,
 }
 
 /**
- * @brief    PWMÒı½Å³õÊ¼»¯
+ * @brief    PWMå¼•è„šåˆå§‹åŒ–
  *
- * @param    base          £ºPWMÄ£¿é PWM1~PWM4
- * @param    subModule     £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é kPWM_Module_0 ~ kPWM_Module_3
- * @param    pwm_channels  £ºPWMÄ£¿éÏÂµÄ×ÓÄ£¿é µÄÍ¨µÀ £º kPWM_PwmA ¡¢ kPWM_PwmB  ¡¢ kPWM_PwmA_B
+ * @param    base          ï¼šPWMæ¨¡å— PWM1~PWM4
+ * @param    subModule     ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— kPWM_Module_0 ~ kPWM_Module_3
+ * @param    pwm_channels  ï¼šPWMæ¨¡å—ä¸‹çš„å­æ¨¡å— çš„é€šé“ ï¼š kPWM_PwmA ã€ kPWM_PwmB  ã€ kPWM_PwmA_B
  *
  * @return
  *
- * @note     ÄÚ²¿µ÷ÓÃµÄ£¬½öÓÃÀ´ÉèÖÃ´®¿Ú¹Ü½Å¸´ÓÃµÄ
+ * @note     å†…éƒ¨è°ƒç”¨çš„ï¼Œä»…ç”¨æ¥è®¾ç½®ä¸²å£ç®¡è„šå¤ç”¨çš„
  *
  * @example
  *
- * @date     2019/5/23 ĞÇÆÚËÄ
+ * @date     2019/5/23 æ˜ŸæœŸå››
  */
 void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t pwm_channels)
 {
-    CLOCK_EnableClock(kCLOCK_Iomuxc); /* ´ò¿ªioÊ±ÖÓ */
+    CLOCK_EnableClock(kCLOCK_Iomuxc); /* æ‰“å¼€ioæ—¶é’Ÿ */
 
     if (base == PWM1)
     {
-        switch (subModule) // Ñ¡ÔñPWM×ÓÄ£¿é
+        switch (subModule) // é€‰æ‹©PWMå­æ¨¡å—
         {
-        case 0: // Ñ¡ÔñPWM1Ä£¿éµÄsubModule0×ÓÄ£¿é
+        case 0: // é€‰æ‹©PWM1æ¨¡å—çš„subModule0å­æ¨¡å—
         {
             if (pwm_channels == kPWM_PwmA || pwm_channels == kPWM_PwmA_B)
             {
@@ -429,7 +426,7 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
             }
             break;
         }
-        case 1: // Ñ¡ÔñPWM1Ä£¿éµÄsubModule1×ÓÄ£¿é
+        case 1: // é€‰æ‹©PWM1æ¨¡å—çš„subModule1å­æ¨¡å—
         {
             if (pwm_channels == kPWM_PwmA || pwm_channels == kPWM_PwmA_B)
             {
@@ -459,7 +456,7 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
             }
             break;
         }
-        case 2: // Ñ¡ÔñPWM1Ä£¿éµÄsubModule2×ÓÄ£¿é
+        case 2: // é€‰æ‹©PWM1æ¨¡å—çš„subModule2å­æ¨¡å—
         {
             if (pwm_channels == kPWM_PwmA || pwm_channels == kPWM_PwmA_B)
             {
@@ -489,7 +486,7 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
             }
             break;
         }
-        case 3: // Ñ¡ÔñPWM1Ä£¿éµÄsubModule3×ÓÄ£¿é
+        case 3: // é€‰æ‹©PWM1æ¨¡å—çš„subModule3å­æ¨¡å—
         {
             if (pwm_channels == kPWM_PwmA || pwm_channels == kPWM_PwmA_B)
             {
@@ -552,14 +549,14 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
         }
         default:
 #ifdef DEBUG
-            PRINTF("\nPWM ³õÊ¼»¯Ê§°Ü£¡\n ÇëÑ¡ÔñkPWM_Module_0 - kPWM_Module_3 \n");
+            PRINTF("\nPWM åˆå§‹åŒ–å¤±è´¥ï¼\n è¯·é€‰æ‹©kPWM_Module_0 - kPWM_Module_3 \n");
 #endif
             break;
         }
     }
     else if (base == PWM2)
     {
-        switch (subModule) // Ñ¡ÔñPWM×ÓÄ£¿é
+        switch (subModule) // é€‰æ‹©PWMå­æ¨¡å—
         {
         case 0:
         {
@@ -709,14 +706,14 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
         }
         default:
 #ifdef DEBUG
-            PRINTF("\nPWM ³õÊ¼»¯Ê§°Ü£¡\n ÇëÑ¡ÔñkPWM_Module_0 - kPWM_Module_3 \n");
+            PRINTF("\nPWM åˆå§‹åŒ–å¤±è´¥ï¼\n è¯·é€‰æ‹©kPWM_Module_0 - kPWM_Module_3 \n");
 #endif
             break;
         }
     }
     else if (base == PWM3)
     {
-        switch (subModule) // Ñ¡ÔñPWM×ÓÄ£¿é
+        switch (subModule) // é€‰æ‹©PWMå­æ¨¡å—
         {
         case 0:
         {
@@ -801,14 +798,14 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
         }
         default:
 #ifdef DEBUG
-            PRINTF("\nPWM ³õÊ¼»¯Ê§°Ü£¡\n ÇëÑ¡ÔñkPWM_Module_0 - kPWM_Module_3 \n");
+            PRINTF("\nPWM åˆå§‹åŒ–å¤±è´¥ï¼\n è¯·é€‰æ‹©kPWM_Module_0 - kPWM_Module_3 \n");
 #endif
             break;
         }
     }
     else if (base == PWM4)
     {
-        switch (subModule) // Ñ¡ÔñPWM×ÓÄ£¿é
+        switch (subModule) // é€‰æ‹©PWMå­æ¨¡å—
         {
         case 0:
         {
@@ -913,7 +910,7 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
         }
         default:
 #ifdef DEBUG
-            PRINTF("\nPWM ³õÊ¼»¯Ê§°Ü£¡\n ÇëÑ¡ÔñkPWM_Module_0 - kPWM_Module_3 \n");
+            PRINTF("\nPWM åˆå§‹åŒ–å¤±è´¥ï¼\n è¯·é€‰æ‹©kPWM_Module_0 - kPWM_Module_3 \n");
 #endif
             break;
         }
@@ -921,7 +918,7 @@ void LQ_PWM_InitPins(PWM_Type *base, pwm_submodule_t subModule, pwm_channels_t p
     else
     {
 #ifdef DEBUG
-        PRINTF("\nPWM ³õÊ¼»¯Ê§°Ü£¡\nÇëÑ¡ÔñPWM1 - PWM4 \n");
+        PRINTF("\nPWM åˆå§‹åŒ–å¤±è´¥ï¼\nè¯·é€‰æ‹©PWM1 - PWM4 \n");
 #endif
     }
 }

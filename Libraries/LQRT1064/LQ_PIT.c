@@ -1,89 +1,87 @@
 /*-----------------------------------------------------------------
-¡¾Æ½    Ì¨¡¿ÁúÇñi.MX RT1064ºËĞÄ°å-ÖÇÄÜ³µ°å
-¡¾±à    Ğ´¡¿LQ-005
-¡¾E-mail  ¡¿chiusir@163.com
-¡¾Èí¼ş°æ±¾¡¿V1.0
-¡¾×îºó¸üĞÂ¡¿2019Äê3ÔÂ12ÈÕ
-¡¾Ïà¹ØĞÅÏ¢²Î¿¼ÏÂÁĞµØÖ·¡¿
-¡¾Íø    Õ¾¡¿http://www.lqist.cn
-¡¾ÌÔ±¦µêÆÌ¡¿http://shop36265907.taobao.com
-¡¾dev.env.¡¿IAR8.30.1¼°ÒÔÉÏ°æ±¾
+ã€å¹³    å°ã€‘é¾™é‚±i.MX RT1064æ ¸å¿ƒæ¿-æ™ºèƒ½è½¦æ¿
+ã€ç¼–    å†™ã€‘LQ-005
+ã€E-mail  ã€‘chiusir@163.com
+ã€è½¯ä»¶ç‰ˆæœ¬ã€‘V1.0
+ã€æœ€åæ›´æ–°ã€‘2019å¹´3æœˆ12æ—¥
+ã€ç›¸å…³ä¿¡æ¯å‚è€ƒä¸‹åˆ—åœ°å€ã€‘
+ã€ç½‘    ç«™ã€‘http://www.lqist.cn
+ã€æ·˜å®åº—é“ºã€‘http://shop36265907.taobao.com
+ã€dev.env.ã€‘IAR8.30.1åŠä»¥ä¸Šç‰ˆæœ¬
 --------------------------------------------------------------------*/
 #include "fsl_pit.h"
 #include "LQ_GPIO_Cfg.h"
 #include "LQ_PIT.h"
 
 /**
-  * @brief    PIT¶¨Ê±Æ÷³õÊ¼»¯
-  *
-  * @param    channel£º PITÍ¨µÀ kPIT_Chnl_0 - kPIT_Chnl_3
-  * @param    count  £º ¶¨Ê±Æ÷Ê±¼ä us
-  *
-  * @return   
-  *
-  * @note     PITºÍGPTÊ¹ÓÃ Í¬Ò»Ê±ÖÓÔ´ Ä¬ÈÏIPG/2Ê±ÖÓ 75M
-  *
-  * @example  PIT_InitConfig(kPIT_Chnl_0, 5000);  //¿ªÆôÍ¨µÀ0¶¨Ê±Æ÷ÖĞ¶Ï£¬Ã¿5000usÖĞ¶ÏÒ»´Î
-  *
-  * @date     2019/6/4 ĞÇÆÚ¶ş
-  */
+ * @brief    PITå®šæ—¶å™¨åˆå§‹åŒ–
+ *
+ * @param    channelï¼š PITé€šé“ kPIT_Chnl_0 - kPIT_Chnl_3
+ * @param    count  ï¼š å®šæ—¶å™¨æ—¶é—´ us
+ *
+ * @return
+ *
+ * @note     PITå’ŒGPTä½¿ç”¨ åŒä¸€æ—¶é’Ÿæº é»˜è®¤IPG/2æ—¶é’Ÿ 75M
+ *
+ * @example  PIT_InitConfig(kPIT_Chnl_0, 5000);  //å¼€å¯é€šé“0å®šæ—¶å™¨ä¸­æ–­ï¼Œæ¯5000usä¸­æ–­ä¸€æ¬¡
+ *
+ * @date     2019/6/4 æ˜ŸæœŸäºŒ
+ */
 void PIT_InitConfig(pit_chnl_t channel, uint32_t count)
 {
     static uint8_t pit_count = 0;
-    
-    /* ·ÀÖ¹PIT¶à´Î³õÊ¼»¯ */
-    if(pit_count == 0)
+
+    /* é˜²æ­¢PITå¤šæ¬¡åˆå§‹åŒ– */
+    if (pit_count == 0)
     {
         pit_count++;
-        
-        /* PIT³õÊ¼»¯½á¹¹Ìå */
-        pit_config_t pitConfig;                
-        
-        /*
-        * pitConfig.enableRunInDebug = false;  
-        */
-        PIT_GetDefaultConfig(&pitConfig);   //»ñÈ¡Ä¬ÈÏ²ÎÊı
-        
-        pitConfig.enableRunInDebug = false;
-        PIT_Init(PIT, &pitConfig);          //³õÊ¼»¯PIT
-        
-        //ÓÅÏÈ¼¶ÅäÖÃ ÇÀÕ¼ÓÅÏÈ¼¶1  ×ÓÓÅÏÈ¼¶2   Ô½Ğ¡ÓÅÏÈ¼¶Ô½¸ß  ÇÀÕ¼ÓÅÏÈ¼¶¿É´ò¶Ï±ğµÄÖĞ¶Ï
-        NVIC_SetPriority(PIT_IRQn,NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1,2));
-        
-        /* Enable at the NVIC */
-        EnableIRQ(PIT_IRQn);                //Ê¹ÄÜÖĞ¶Ï
-        
-    }
- 
-    /* ÉèÖÃPITÍ¨µÀºÍ¶¨Ê±Ê±¼ä PITÄ¬ÈÏÊ¹ÓÃIPGÊ±ÖÓµÄ¶ş·ÖÆµ 75MÊ±ÖÓ */
-    PIT_SetTimerPeriod(PIT, channel, USEC_TO_COUNT(count, CLOCK_GetFreq(kCLOCK_IpgClk)/2)); 
-    
-    //Çå³ıÖĞ¶Ï±êÖ¾Î»
-    PIT_ClearStatusFlags(PIT, channel, kPIT_TimerFlag); 
-    
-    //Ê¹ÄÜÍ¨µÀÖĞ¶Ï
-    PIT_EnableInterrupts(PIT, channel, kPIT_TimerInterruptEnable);  
 
-    //¿ªÆô¶¨Ê±Æ÷
-    PIT_StartTimer(PIT, channel);   
-    
-    if(channel == kPIT_Chnl_1)
+        /* PITåˆå§‹åŒ–ç»“æ„ä½“ */
+        pit_config_t pitConfig;
+
+        /*
+         * pitConfig.enableRunInDebug = false;
+         */
+        PIT_GetDefaultConfig(&pitConfig); // è·å–é»˜è®¤å‚æ•°
+
+        pitConfig.enableRunInDebug = false;
+        PIT_Init(PIT, &pitConfig); // åˆå§‹åŒ–PIT
+
+        // ä¼˜å…ˆçº§é…ç½® æŠ¢å ä¼˜å…ˆçº§1  å­ä¼˜å…ˆçº§2   è¶Šå°ä¼˜å…ˆçº§è¶Šé«˜  æŠ¢å ä¼˜å…ˆçº§å¯æ‰“æ–­åˆ«çš„ä¸­æ–­
+        NVIC_SetPriority(PIT_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 1, 2));
+
+        /* Enable at the NVIC */
+        EnableIRQ(PIT_IRQn); // ä½¿èƒ½ä¸­æ–­
+    }
+
+    /* è®¾ç½®PITé€šé“å’Œå®šæ—¶æ—¶é—´ PITé»˜è®¤ä½¿ç”¨IPGæ—¶é’Ÿçš„äºŒåˆ†é¢‘ 75Mæ—¶é’Ÿ */
+    PIT_SetTimerPeriod(PIT, channel, USEC_TO_COUNT(count, CLOCK_GetFreq(kCLOCK_IpgClk) / 2));
+
+    // æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
+    PIT_ClearStatusFlags(PIT, channel, kPIT_TimerFlag);
+
+    // ä½¿èƒ½é€šé“ä¸­æ–­
+    PIT_EnableInterrupts(PIT, channel, kPIT_TimerInterruptEnable);
+
+    // å¼€å¯å®šæ—¶å™¨
+    PIT_StartTimer(PIT, channel);
+
+    if (channel == kPIT_Chnl_1)
     {
-        PIT_StopTimer(PIT, channel);   
-            
+        PIT_StopTimer(PIT, channel);
+
         PIT->CHANNEL[1].TCTRL = 0x03;
-        
-        /* ÉèÖÃPITÍ¨µÀºÍ¶¨Ê±Ê±¼ä PITÄ¬ÈÏÊ¹ÓÃIPGÊ±ÖÓµÄ¶ş·ÖÆµ 75MÊ±ÖÓ */
-        PIT_SetTimerPeriod(PIT, channel, USEC_TO_COUNT(count, CLOCK_GetFreq(kCLOCK_IpgClk)/2)); 
-        
-        //Çå³ıÖĞ¶Ï±êÖ¾Î»
-        PIT_ClearStatusFlags(PIT, channel, kPIT_TimerFlag); 
-        
-        //Ê¹ÄÜÍ¨µÀÖĞ¶Ï
-        PIT_EnableInterrupts(PIT, channel, kPIT_TimerInterruptEnable);  
-        
-        //¿ªÆô¶¨Ê±Æ÷
-        PIT_StartTimer(PIT, channel); 
+
+        /* è®¾ç½®PITé€šé“å’Œå®šæ—¶æ—¶é—´ PITé»˜è®¤ä½¿ç”¨IPGæ—¶é’Ÿçš„äºŒåˆ†é¢‘ 75Mæ—¶é’Ÿ */
+        PIT_SetTimerPeriod(PIT, channel, USEC_TO_COUNT(count, CLOCK_GetFreq(kCLOCK_IpgClk) / 2));
+
+        // æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
+        PIT_ClearStatusFlags(PIT, channel, kPIT_TimerFlag);
+
+        // ä½¿èƒ½é€šé“ä¸­æ–­
+        PIT_EnableInterrupts(PIT, channel, kPIT_TimerInterruptEnable);
+
+        // å¼€å¯å®šæ—¶å™¨
+        PIT_StartTimer(PIT, channel);
     }
 }
-

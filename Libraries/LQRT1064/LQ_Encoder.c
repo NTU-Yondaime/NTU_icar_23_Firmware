@@ -1,28 +1,27 @@
 /*----------------------------------------------------------
-¡¾Æ½    Ì¨¡¿ÁúÇñi.MX RT1064ºËĞÄ°å-ÖÇÄÜ³µ°å
-¡¾±à    Ğ´¡¿CHIUSIR
-¡¾E-mail  ¡¿chiusir@163.com
-¡¾Èí¼ş°æ±¾¡¿V1.0
-¡¾×îºó¸üĞÂ¡¿2018Äê2ÔÂ1ÈÕ
-¡¾Ïà¹ØĞÅÏ¢²Î¿¼ÏÂÁĞµØÖ·¡¿
-¡¾Íø    Õ¾¡¿http://www.lqist.cn
-¡¾ÌÔ±¦µêÆÌ¡¿http://shop36265907.taobao.com
-¡¾dev.env.¡¿IAR8.30.1¼°ÒÔÉÏ°æ±¾
+ã€å¹³    å°ã€‘é¾™é‚±i.MX RT1064æ ¸å¿ƒæ¿-æ™ºèƒ½è½¦æ¿
+ã€ç¼–    å†™ã€‘CHIUSIR
+ã€E-mail  ã€‘chiusir@163.com
+ã€è½¯ä»¶ç‰ˆæœ¬ã€‘V1.0
+ã€æœ€åæ›´æ–°ã€‘2018å¹´2æœˆ1æ—¥
+ã€ç›¸å…³ä¿¡æ¯å‚è€ƒä¸‹åˆ—åœ°å€ã€‘
+ã€ç½‘    ç«™ã€‘http://www.lqist.cn
+ã€æ·˜å®åº—é“ºã€‘http://shop36265907.taobao.com
+ã€dev.env.ã€‘IAR8.30.1åŠä»¥ä¸Šç‰ˆæœ¬
 
-±àÂëÆ÷£¨ENC£©
-G13--AÏà»òÕßLSB
-F14--BÏà»òÕßDIR
+ç¼–ç å™¨ï¼ˆENCï¼‰
+G13--Aç›¸æˆ–è€…LSB
+F14--Bç›¸æˆ–è€…DIR
 
-H2--AÏà»òÕßLSB
-J2--BÏà»òÕßDIR
+H2--Aç›¸æˆ–è€…LSB
+J2--Bç›¸æˆ–è€…DIR
 
-J3--AÏà»òÕßLSB
-K1--BÏà»òÕßDIR
+J3--Aç›¸æˆ–è€…LSB
+K1--Bç›¸æˆ–è€…DIR
 
-C11--AÏà»òÕßLSB
-B11--BÏà»òÕßDIR
+C11--Aç›¸æˆ–è€…LSB
+B11--Bç›¸æˆ–è€…DIR
 -------------------------------------------------------------*/
-#include "include.h"
 #include "LQ_Encoder.h"
 #include "LQ_LED.h"
 #include "fsl_debug_console.h"
@@ -33,32 +32,32 @@ B11--BÏà»òÕßDIR
 #include "fsl_xbara.h"
 #include "stdio.h"
 
-/* ÉùÃ÷Íâ²¿ÑÓÊ±º¯Êı */
+/* å£°æ˜å¤–éƒ¨å»¶æ—¶å‡½æ•° */
 extern void delayms(uint16_t ms);
 
 /**
- * @brief    ³õÊ¼»¯ ENCÄ£¿é
+ * @brief    åˆå§‹åŒ– ENCæ¨¡å—
  *
- * @param    base        £º ENC1 - ENC4
- * @param    direction   £º ÊÇ·ñ·´Ïò
+ * @param    base        ï¼š ENC1 - ENC4
+ * @param    direction   ï¼š æ˜¯å¦åå‘
  *
  * @return
  *
- * @note     Ä¬ÈÏ LSB+DirÄ£Ê½  ¿ÉÒÔĞŞ¸Ä
+ * @note     é»˜è®¤ LSB+Diræ¨¡å¼  å¯ä»¥ä¿®æ”¹
  *
  * @example
  *
- * @date     2019/6/12 ĞÇÆÚÈı
+ * @date     2019/6/12 æ˜ŸæœŸä¸‰
  */
 void LQ_ENC_Init(ENC_Type *base, bool direction)
 {
     ENC_PinInit(base);
 
-    enc_config_t mEncConfigStruct;           // ENC³õÊ¼»¯½á¹¹Ìå
-    ENC_GetDefaultConfig(&mEncConfigStruct); // µÃµ½Ä¬ÈÏ²ÎÊı
-    /* mEncConfigStructÄ¬ÈÏ²ÎÊı
+    enc_config_t mEncConfigStruct;           // ENCåˆå§‹åŒ–ç»“æ„ä½“
+    ENC_GetDefaultConfig(&mEncConfigStruct); // å¾—åˆ°é»˜è®¤å‚æ•°
+    /* mEncConfigStructé»˜è®¤å‚æ•°
     config->enableReverseDirection = false;
-    config->decoderWorkMode = kENC_DecoderWorkAsNormalMode;  //A BÁ½ÏàÄ£Ê½
+    config->decoderWorkMode = kENC_DecoderWorkAsNormalMode;  //A Bä¸¤ç›¸æ¨¡å¼
     config->HOMETriggerMode = kENC_HOMETriggerDisabled;
     config->INDEXTriggerMode = kENC_INDEXTriggerDisabled;
     config->enableTRIGGERClearPositionCounter = false;
@@ -76,16 +75,16 @@ void LQ_ENC_Init(ENC_Type *base, bool direction)
 
     if (direction)
     {
-        mEncConfigStruct.enableReverseDirection = true; // ·´·½Ïò
+        mEncConfigStruct.enableReverseDirection = true; // åæ–¹å‘
     }
 
-    mEncConfigStruct.decoderWorkMode = kENC_DecoderWorkAsSignalPhaseCountMode; // LSB+DirÄ£Ê½   kENC_DecoderWorkAsNormalMode£º ÆÕÍ¨Õı½»½âÂë
-    ENC_Init(base, &mEncConfigStruct);                                         // ³õÊ¼»¯Õı½»½âÂëÄ£¿é
-    ENC_DoSoftwareLoadInitialPositionValue(base);                              /* Î»ÖÃ¼ÆÊıÆ÷³õÊ¼Öµ¸üĞÂ³É0. */
+    mEncConfigStruct.decoderWorkMode = kENC_DecoderWorkAsSignalPhaseCountMode; // LSB+Diræ¨¡å¼   kENC_DecoderWorkAsNormalModeï¼š æ™®é€šæ­£äº¤è§£ç 
+    ENC_Init(base, &mEncConfigStruct);                                         // åˆå§‹åŒ–æ­£äº¤è§£ç æ¨¡å—
+    ENC_DoSoftwareLoadInitialPositionValue(base);                              /* ä½ç½®è®¡æ•°å™¨åˆå§‹å€¼æ›´æ–°æˆ0. */
 }
 
 /**
- * @brief    ³õÊ¼»¯ ENC¹Ü½Å
+ * @brief    åˆå§‹åŒ– ENCç®¡è„š
  *
  * @param
  *
@@ -95,11 +94,11 @@ void LQ_ENC_Init(ENC_Type *base, bool direction)
  *
  * @example
  *
- * @date     2019/6/12 ĞÇÆÚÈı
+ * @date     2019/6/12 æ˜ŸæœŸä¸‰
  */
 void ENC_PinInit(ENC_Type *base)
 {
-    CLOCK_EnableClock(kCLOCK_Iomuxc); /* ´ò¿ªioÊ±ÖÓ */
+    CLOCK_EnableClock(kCLOCK_Iomuxc); /* æ‰“å¼€ioæ—¶é’Ÿ */
     CLOCK_EnableClock(kCLOCK_Xbar1);
 
     if (base == ENC1)
@@ -3517,7 +3516,7 @@ void ENC_PinInit(ENC_Type *base)
     else
     {
 #ifdef DEBUG
-        PRINTF("\nÇëÑ¡ÔñÕıÈ·µÄENCÄ£¿é£º ENC1 - ENC4\n");
+        PRINTF("\nè¯·é€‰æ‹©æ­£ç¡®çš„ENCæ¨¡å—ï¼š ENC1 - ENC4\n");
 #endif
     }
 }
