@@ -193,8 +193,8 @@ inline void LQ_PWMA_B_SetDuty(PWM_Type *base, pwm_submodule_t subModule, uint16_
  */
 inline void LQ_SetServoDty(uint16_t duty)
 {
-    if (duty > 850)
-        duty = 850; // 限幅，可自行修改
+    if (duty > 950)
+        duty = 950; // 限幅，可自行修改
     if (duty < 650)
         duty = 650;
     LQ_PWMA_B_SetDuty(PWM2, kPWM_Module_3, duty, duty); // M3 M4
