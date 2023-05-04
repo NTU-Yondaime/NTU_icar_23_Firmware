@@ -38,7 +38,7 @@ double v_raw;
 struct pid_coeffs vPID = {V_kP, V_kI, V_kD};
 void main(void)
 {
-	int speed_target = 0, angle_target = 750;
+	int speed_target = 0, angle_target = 800;
 	double speed_c;
 	BOARD_INIT();
 	// 优先级配置 抢占优先级1  子优先级2   越小优先级越高  抢占优先级可打断别的中断
