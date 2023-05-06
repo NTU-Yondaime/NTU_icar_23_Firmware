@@ -1,195 +1,159 @@
-/*LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
-¡¾Æ½    Ì¨¡¿ÁúÇñi.MX RT1064ºËĞÄ°å-ÖÇÄÜ³µ°å
-¡¾±à    Ğ´¡¿LQ-005
-¡¾E-mail  ¡¿chiusir@163.com
-¡¾Èí¼ş°æ±¾¡¿V1.0£¬ÁúÇñ¿ªÔ´´úÂë£¬½ö¹©²Î¿¼£¬ºó¹û×Ô¸º
-¡¾×îºó¸üĞÂ¡¿2019Äê03ÔÂ13ÈÕ
-¡¾Ïà¹ØĞÅÏ¢²Î¿¼ÏÂÁĞµØÖ·¡¿
-¡¾Íø    Õ¾¡¿http://www.lqist.cn
-¡¾ÌÔ±¦µêÆÌ¡¿http://shop36265907.taobao.com
-------------------------------------------------
-¡¾dev.env.¡¿IAR8.30.1¼°ÒÔÉÏ°æ±¾
-QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ*/
 #include "fsl_common.h"
 #include "LQ_LED.h"
 #include "LQ_SYSTICK.h"
 
-#define EACH_PER_MS    25   //Ã¿¸ô 25 ms ÖĞ¶ÏÒ»´Î  systick ¶¨Ê±Æ÷ÊÇ24Î»ÏòÏÂ¼ÆÊıµÄ¶¨Ê±Æ÷  ×î´ó×°ÔØÖµ16777215 / 600 000 000= 0.2796 ×î´ó¼ÆÊ±27ms
+#define EACH_PER_MS 25 // æ¯éš” 25 ms ä¸­æ–­ä¸€æ¬¡  systick å®šæ—¶å™¨æ˜¯24ä½å‘ä¸‹è®¡æ•°çš„å®šæ—¶å™¨  æœ€å¤§è£…è½½å€¼16777215 / 600 000 000= 0.2796 æœ€å¤§è®¡æ—¶27ms
 
-struct time{
-	
-    uint32_t fac_us;                  //us·ÖÆµÏµÊı
-	uint32_t fac_ms;                  //ms·ÖÆµÏµÊı
-	volatile uint32_t millisecond;    //µ±Ç°msÖµ
-	uint8_t ms_per_tick;              //Ã¿¸ô¶àÉÙmsÖĞ¶ÏÒ»´Î
-	
-}timer;
+struct time
+{
 
+  uint32_t fac_us;               // usåˆ†é¢‘ç³»æ•°
+  uint32_t fac_ms;               // msåˆ†é¢‘ç³»æ•°
+  volatile uint32_t millisecond; // å½“å‰mså€¼
+  uint8_t ms_per_tick;           // æ¯éš”å¤šå°‘msä¸­æ–­ä¸€æ¬¡
 
+} timer;
 
 /**
-  * @brief    systime ³õÊ¼»¯
-  *
-  * @param    
-  *
-  * @return   
-  *
-  * @note     Ä¬ÈÏÓÅÏÈ¼¶×îµÍ ¿ÉÒÔĞŞ¸Ä
-  *
-  * @example  
-  *
-  * @date     2019/6/10 ĞÇÆÚÒ»
-  */
+ * @brief    systime åˆå§‹åŒ–
+ *
+ * @param
+ *
+ * @return
+ *
+ * @note     é»˜è®¤ä¼˜å…ˆçº§æœ€ä½ å¯ä»¥ä¿®æ”¹
+ *
+ * @example
+ *
+ * @date     2019/6/10 æ˜ŸæœŸä¸€
+ */
 void systime_init(void)
 {
-	timer.fac_us = SystemCoreClock / 1000000;
-	timer.fac_ms = SystemCoreClock / 1000;
-	timer.ms_per_tick = EACH_PER_MS;
-    timer.millisecond = 100;
-	SysTick_Config((SystemCoreClock / 1000) * timer.ms_per_tick );   //¿ªÆôsystickÖĞ¶Ï
-    
-//    //ÓÅÏÈ¼¶ÅäÖÃ ÇÀÕ¼ÓÅÏÈ¼¶1  ×ÓÓÅÏÈ¼¶2   Ô½Ğ¡ÓÅÏÈ¼¶Ô½¸ß  ÇÀÕ¼ÓÅÏÈ¼¶¿É´ò¶Ï±ğµÄÖĞ¶Ï
-//    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1,2));
+  timer.fac_us = SystemCoreClock / 1000000;
+  timer.fac_ms = SystemCoreClock / 1000;
+  timer.ms_per_tick = EACH_PER_MS;
+  timer.millisecond = 100;
+  SysTick_Config((SystemCoreClock / 1000) * timer.ms_per_tick); // å¼€å¯systickä¸­æ–­
+
+  //    //ä¼˜å…ˆçº§é…ç½® æŠ¢å ä¼˜å…ˆçº§1  å­ä¼˜å…ˆçº§2   è¶Šå°ä¼˜å…ˆçº§è¶Šé«˜  æŠ¢å ä¼˜å…ˆçº§å¯æ‰“æ–­åˆ«çš„ä¸­æ–­
+  //    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1,2));
 }
 
-
-
 /**
-  * @brief    systime ÖĞ¶Ï·şÎñº¯Êı
-  *
-  * @param    
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/10 ĞÇÆÚÒ»
-  */
+ * @brief    systime ä¸­æ–­æœåŠ¡å‡½æ•°
+ *
+ * @param
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/10 æ˜ŸæœŸä¸€
+ */
 void SysTick_Handler(void)
 {
-	timer.millisecond += timer.ms_per_tick;
-   
-#ifdef USE_SD
-    /* SD¿¨ÓÃµ½µÄ Ê¹ÓÃSD¿¨ĞèÒªÊ¹ÓÃ ²»ÓÃSD¿¨É¾³ı¼´¿É */
-    extern volatile uint32_t g_eventTimeMilliseconds;
-    g_eventTimeMilliseconds += EACH_PER_MS;
-#endif
+  timer.millisecond += timer.ms_per_tick;
 }
 
-
-
 /**
-  * @brief    »ñÈ¡µ±Ç°Ê±¼ä
-  *
-  * @param    
-  *
-  * @return   µ±Ç°msÖµ
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/10 ĞÇÆÚÒ»
-  */
+ * @brief    è·å–å½“å‰æ—¶é—´
+ *
+ * @param
+ *
+ * @return   å½“å‰mså€¼
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/10 æ˜ŸæœŸä¸€
+ */
 static inline uint32_t systime_get_current_time_ms(void)
 {
-    register uint32_t val, ms;
-    do
-    {
-        ms  = timer.millisecond;
-        val = SysTick->VAL; 
-    }while(ms != timer.millisecond);
-    
-	return ms  -  val/timer.fac_ms;
+  register uint32_t val, ms;
+  do
+  {
+    ms = timer.millisecond;
+    val = SysTick->VAL;
+  } while (ms != timer.millisecond);
+
+  return ms - val / timer.fac_ms;
 }
 
-
-
 /**
-  * @brief    »ñÈ¡µ±Ç°Ê±¼ä
-  *
-  * @param    
-  *
-  * @return   µ±Ç°usÖµ
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/10 ĞÇÆÚÒ»
-  */
+ * @brief    è·å–å½“å‰æ—¶é—´
+ *
+ * @param
+ *
+ * @return   å½“å‰uså€¼
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/10 æ˜ŸæœŸä¸€
+ */
 static inline uint32_t systime_get_current_time_us(void)
 {
-    register uint32_t val, ms;
-    do
-    {
-        ms  = timer.millisecond;
-        val = SysTick->VAL;
-    }while(ms != timer.millisecond);
-	return (uint32_t)((uint32_t)(ms * 1000) -  val / timer.fac_us);
+  register uint32_t val, ms;
+  do
+  {
+    ms = timer.millisecond;
+    val = SysTick->VAL;
+  } while (ms != timer.millisecond);
+  return (uint32_t)((uint32_t)(ms * 1000) - val / timer.fac_us);
 }
-
-
-
 
 /**
-  * @brief    systime ÑÓÊ±º¯Êı
-  *
-  * @param    
-  *
-  * @return   
-  *
-  * @note     ×î´óÑÓÊ±²»Òª³¬¹ı 4292s
-  *
-  * @example  
-  *
-  * @date     2019/6/10 ĞÇÆÚÒ»
-  */
-void systime_delay_us(uint32_t us)     
+ * @brief    systime å»¶æ—¶å‡½æ•°
+ *
+ * @param
+ *
+ * @return
+ *
+ * @note     æœ€å¤§å»¶æ—¶ä¸è¦è¶…è¿‡ 4292ms
+ *
+ * @example
+ *
+ * @date     2019/6/10 æ˜ŸæœŸä¸€
+ */
+void systime_delay_us(uint32_t us)
 {
-    uint32_t now = systime.get_time_us();
-	uint32_t end_time = now + us - 1;
-	while( systime.get_time_us() <= end_time)
-    {
-        ;
-    }
+  uint32_t now = systime.get_time_us();
+  uint32_t end_time = now + us - 1;
+  while (systime.get_time_us() <= end_time)
+  {
+    ;
+  }
 }
-
-
 
 /**
-  * @brief    ÑÓÊ±º¯Êı
-  *
-  * @param    ms :  ÑÓÊ±Ê±¼ä
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/10 ĞÇÆÚÒ»
-  */
-void systime_delay_ms(uint32_t ms) 
+ * @brief    å»¶æ—¶å‡½æ•°
+ *
+ * @param    ms :  å»¶æ—¶æ—¶é—´
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/10 æ˜ŸæœŸä¸€
+ */
+void systime_delay_ms(uint32_t ms)
 {
-    while(ms--)
-    {
-        systime.delay_us(1000);
-    }
-	
+  while (ms--)
+  {
+    systime.delay_us(1000);
+  }
 }
 
-
-systime_t  systime = 
-{
-	systime_init,
-	systime_get_current_time_us,
-	systime_get_current_time_ms,
-	systime_delay_us,
-	systime_delay_ms
-};
-
-
-
+systime_t systime =
+    {
+        systime_init,
+        systime_get_current_time_us,
+        systime_get_current_time_ms,
+        systime_delay_us,
+        systime_delay_ms};

@@ -1,153 +1,144 @@
 /*LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
-¡¾Æ½    Ì¨¡¿ÁúÇñi.MX RT1064ºËĞÄ°å-ÖÇÄÜ³µ°å
-¡¾±à    Ğ´¡¿LQ-005
-¡¾E-mail  ¡¿chiusir@163.com
-¡¾Èí¼ş°æ±¾¡¿V1.0£¬ÁúÇñ¿ªÔ´´úÂë£¬½ö¹©²Î¿¼£¬ºó¹û×Ô¸º
-¡¾×îºó¸üĞÂ¡¿2019Äê10ÔÂ18ÈÕ
-¡¾Ïà¹ØĞÅÏ¢²Î¿¼ÏÂÁĞµØÖ·¡¿
-¡¾Íø    Õ¾¡¿http://www.lqist.cn
-¡¾ÌÔ±¦µêÆÌ¡¿http://shop36265907.taobao.com
+ã€å¹³    å°ã€‘é¾™é‚±i.MX RT1064æ ¸å¿ƒæ¿-æ™ºèƒ½è½¦æ¿
+ã€ç¼–    å†™ã€‘LQ-005
+ã€E-mail  ã€‘chiusir@163.com
+ã€è½¯ä»¶ç‰ˆæœ¬ã€‘V1.0ï¼Œé¾™é‚±å¼€æºä»£ç ï¼Œä»…ä¾›å‚è€ƒï¼Œåæœè‡ªè´Ÿ
+ã€æœ€åæ›´æ–°ã€‘2019å¹´10æœˆ18æ—¥
+ã€ç›¸å…³ä¿¡æ¯å‚è€ƒä¸‹åˆ—åœ°å€ã€‘
+ã€ç½‘    ç«™ã€‘http://www.lqist.cn
+ã€æ·˜å®åº—é“ºã€‘http://shop36265907.taobao.com
 ------------------------------------------------
-¡¾dev.env.¡¿IAR8.30.1¼°ÒÔÉÏ°æ±¾
-¡¾Target ¡¿ i.MX RT1064
-¡¾Crystal¡¿ 24.000Mhz
-¡¾ARM PLL¡¿ 1200MHz
-¡¾SYS PLL¡¿ 600MHz
-¡¾USB PLL¡¿ 480MHz
+ã€dev.env.ã€‘IAR8.30.1åŠä»¥ä¸Šç‰ˆæœ¬
+ã€Target ã€‘ i.MX RT1064
+ã€Crystalã€‘ 24.000Mhz
+ã€ARM PLLã€‘ 1200MHz
+ã€SYS PLLã€‘ 600MHz
+ã€USB PLLã€‘ 480MHz
 ================================================
 QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ*/
 #ifndef __LQ_UART_H
 #define __LQ_UART_H
+#include "MIMXRT1064.h"
 
-/**********************************  LP_UART(Òı½Å¸´ÓÃ) ***************************************/
-//     ´®¿ÚÊä³öÍ¨µÀ        ¶Ë¿Ú            ¿ÉÑ¡·¶Î§              ½¨Òé
-#define LP_UART1_RX        L14             //L14
-#define LP_UART1_TX        K14             //K14
+/**********************************  LP_UART(å¼•è„šå¤ç”¨) ***************************************/
+//     ä¸²å£è¾“å‡ºé€šé“        ç«¯å£            å¯é€‰èŒƒå›´              å»ºè®®
+#define LP_UART1_RX L14 // L14
+#define LP_UART1_TX K14 // K14
 
-#define LP_UART2_RX        M12             //M12  P4             P4½ÓQSPI FLASH  
-#define LP_UART2_TX        L11             //L11  P5             P5½ÓQSPI FLASH 
+#define LP_UART2_RX M12 // M12  P4             P4æ¥QSPI FLASH
+#define LP_UART2_TX L11 // L11  P5             P5æ¥QSPI FLASH
 
-#define LP_UART3_RX        C9              //B6  C9  K10         B6½ÓSDRAM   
-#define LP_UART3_TX        B9              //A6  B9  C12         A6½ÓSDRAM
+#define LP_UART3_RX C9 // B6  C9  K10         B6æ¥SDRAM
+#define LP_UART3_TX B9 // A6  B9  C12         A6æ¥SDRAM
 
-#define LP_UART4_RX        B11             //A3  B11 M5          A3½ÓSDRAM
-#define LP_UART4_TX        A11             //A11 B4  L5          B4½ÓSDRAM 
+#define LP_UART4_RX B11 // A3  B11 M5          A3æ¥SDRAM
+#define LP_UART4_TX A11 // A11 B4  L5          B4æ¥SDRAM
 
-#define LP_UART5_RX        D14             //D3  D14             D3½ÓSDRAM
-#define LP_UART5_TX        D13             //D13 G2              G2½ÓSDRAM
+#define LP_UART5_RX D14 // D3  D14             D3æ¥SDRAM
+#define LP_UART5_TX D13 // D13 G2              G2æ¥SDRAM
 
-#define LP_UART6_RX        G11             //B3  G11             B3½ÓSDRAM
-#define LP_UART6_TX        M11             //D2  M11             D2½ÓSDRAM
+#define LP_UART6_RX G11 // B3  G11             B3æ¥SDRAM
+#define LP_UART6_TX M11 // D2  M11             D2æ¥SDRAM
 
-#define LP_UART7_RX        N4              //D5  N4              D5½ÓSDRAM  N4½ÓQSPI FLASH 
-#define LP_UART7_TX        P3              //C5  P3              C5½ÓSDRAM  P3½ÓQSPI FLASH
+#define LP_UART7_RX N4 // D5  N4              D5æ¥SDRAM  N4æ¥QSPI FLASH
+#define LP_UART7_TX P3 // C5  P3              C5æ¥SDRAM  P3æ¥QSPI FLASH
 
-#define LP_UART8_RX        J2              //B7  J2  J13         B7½ÓSDRAM 
-#define LP_UART8_TX        H2              //D6  H2  L13         D6½ÓSDRAM
-
-
+#define LP_UART8_RX J2 // B7  J2  J13         B7æ¥SDRAM
+#define LP_UART8_TX H2 // D6  H2  L13         D6æ¥SDRAM
 
 /**
-  * @brief    ´®¿ÚÒı½Å¸´ÓÃ³õÊ¼»¯
-  *
-  * @param    base£º LPUART1 - LPUART8
-  *
-  * @return   
-  *
-  * @note     ÄÚ²¿µ÷ÓÃµÄ£¬½öÓÃÀ´ÉèÖÃ´®¿Ú¹Ü½Å¸´ÓÃµÄ
-  *
-  * @example  
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    ä¸²å£å¼•è„šå¤ç”¨åˆå§‹åŒ–
+ *
+ * @param    baseï¼š LPUART1 - LPUART8
+ *
+ * @return
+ *
+ * @note     å†…éƒ¨è°ƒç”¨çš„ï¼Œä»…ç”¨æ¥è®¾ç½®ä¸²å£ç®¡è„šå¤ç”¨çš„
+ *
+ * @example
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 void UART_PinInit(LPUART_Type *base);
 
 /**
-  * @brief    ´®¿Ú³õÊ¼»¯
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    bound £º ´®¿Ú²¨ÌØÂÊ
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    ä¸²å£åˆå§‹åŒ–
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    bound ï¼š ä¸²å£æ³¢ç‰¹ç‡
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 void LQ_UART_Init(LPUART_Type *base, uint32_t bound);
 
-
 /**
-  * @brief    ·¢ËÍÒ»¸ö×Ö·û
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    data  £º ·¢ËÍµÄ×Ö·û
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  UART_PutChar(LPUART1, char);  //´®¿Ú1  ·¢ËÍchar
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    å‘é€ä¸€ä¸ªå­—ç¬¦
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    data  ï¼š å‘é€çš„å­—ç¬¦
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example  UART_PutChar(LPUART1, char);  //ä¸²å£1  å‘é€char
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 void UART_PutChar(LPUART_Type *base, uint8_t data);
 
+/**
+ * @brief    å‘é€ä¸€ä¸ªæ•°ç»„
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    data  ï¼š å‘é€çš„å­—ç¬¦
+ * @param    lengthï¼š å‘é€çš„å­—ç¬¦é•¿åº¦
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example  UART_PutBuff(LPUART1, buff, 10);//ä¸²å£1ï¼Œå‘é€ä¸€ä¸ªé•¿åº¦ä¸º10åœ°å€ä¸ºbuffçš„æ•°ç»„
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
+void UART_PutBuff(LPUART_Type *base, uint8_t *buff, uint32_t length);
 
 /**
-  * @brief    ·¢ËÍÒ»¸öÊı×é
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    data  £º ·¢ËÍµÄ×Ö·û
-  * @param    length£º ·¢ËÍµÄ×Ö·û³¤¶È
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  UART_PutBuff(LPUART1, buff, 10);//´®¿Ú1£¬·¢ËÍÒ»¸ö³¤¶ÈÎª10µØÖ·ÎªbuffµÄÊı×é
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
-void UART_PutBuff(LPUART_Type *base, uint8_t * buff, uint32_t length);
-
-
+ * @brief    å‘é€ä¸€ä¸ªå­—ç¬¦ä¸²
+ *
+ * @param    base  ï¼š LPUART1 - LPUART8
+ * @param    data  ï¼š å‘é€çš„å­—ç¬¦
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example  UART_PutBuff(LPUART1, buff, 10);//ä¸²å£1ï¼Œå‘é€ä¸€ä¸ªé•¿åº¦ä¸º10åœ°å€ä¸ºbuffçš„æ•°ç»„
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
+void UART_PutStr(LPUART_Type *base, uint8_t *str);
 
 /**
-  * @brief    ·¢ËÍÒ»¸ö×Ö·û´®
-  *
-  * @param    base  £º LPUART1 - LPUART8
-  * @param    data  £º ·¢ËÍµÄ×Ö·û
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  UART_PutBuff(LPUART1, buff, 10);//´®¿Ú1£¬·¢ËÍÒ»¸ö³¤¶ÈÎª10µØÖ·ÎªbuffµÄÊı×é
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
-void UART_PutStr(LPUART_Type *base, uint8_t * str);
-
-
-
-
-/**
-  * @brief    ´®¿Ú²âÊÔº¯Êı
-  *
-  * @param    
-  *
-  * @return   
-  *
-  * @note     
-  *
-  * @example  
-  *
-  * @date     2019/6/6 ĞÇÆÚËÄ
-  */
+ * @brief    ä¸²å£æµ‹è¯•å‡½æ•°
+ *
+ * @param
+ *
+ * @return
+ *
+ * @note
+ *
+ * @example
+ *
+ * @date     2019/6/6 æ˜ŸæœŸå››
+ */
 void Test_UART(void);
-
 
 #endif

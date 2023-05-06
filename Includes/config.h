@@ -8,4 +8,5 @@
 #define UART_INDEX (LPUART1)
 #define UART_BAUDRATE (115200)
 
+
 #endif // !_CONFIG_H_

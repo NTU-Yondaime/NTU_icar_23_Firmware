@@ -1,8 +1,6 @@
 #include "headfiles.h"
 // 全局数据组
 // 串口
-#define UART_INDEX (LPUART1)
-#define UART_BAUDRATE (115200)
 uint8_t uart_get_data[64];
 uint8_t fifo_get_data[64];
 uint8_t get_data = 0;
@@ -12,10 +10,28 @@ fifo_struct uart_data_fifo;
 double v_raw;
 // 算法
 pid_coeffs_struct vPID = {V_kP, V_kI, V_kD};
+// 板载设置初始化
+void BoardSettingsInit(void)
+{
+	BOARD_ConfigMPU();		  /* 初始化内存保护单元 */
+	BOARD_BootClockRUN();	  /* 初始化开发板时钟   */
+	BOARD_InitPins();		  /* 串口管脚初始化     */
+	BOARD_InitDebugConsole(); /* 初始化串口         */
+	/*设置中断优先级组  0: 0个抢占优先级16位个子优先级
+	 1: 2个抢占优先级 8个子优先级
+	 2: 4个抢占优先级 4个子优先级
+	 3: 8个抢占优先级 2个子优先级
+	 4: 16个抢占优先级 0个子优先级
+	 */
+	/* 配置优先级组 2: 4个抢占优先级 4个子优先级 */
+	NVIC_SetPriorityGrouping(NVIC_Group2);
+	LQ_PinInit(H10, PIN_MODE_OUTPUT, 1);
+}
 
 // 系统设置初始化
 void SystemSettingsInit(void)
 {
+	systime.init();
 	NVIC_SetPriority(LPUART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 1, 2));
 	LQ_UART_Init(LPUART1, 115200);
 	EnableIRQ(LPUART1_IRQn); // 使能LPUART1
@@ -26,12 +42,13 @@ void SystemSettingsInit(void)
 	LQ_PWM_Init(PWM2, kPWM_Module_3, kPWM_PwmA_B, 50); // M3 M4
 	LQ_ENC_Init(ENC4, true);
 	fifo_init(&uart_data_fifo, FIFO_DATA_8BIT, uart_get_data, 64);
-	systime_init();
 }
 
-void main(void)
+int main(void)
 {
+	BoardSettingsInit();
 	SystemSettingsInit();
+	systime.init();
 	int v_target, angle_target = 750;
 	double v_ctrl;
 	while (1)
@@ -43,11 +60,11 @@ void main(void)
 			sscanf(fifo_get_data, "%d,%d", &v_target, &angle_target);
 		}
 		v_ctrl = incrPID(v_target, v_raw / V_k_20ms, &vPID);
-		if (v_ctrl > MAX_PWM)
+		if (v_ctrl > MAX_PWM || -v_ctrl > MAX_PWM)
 		{
 			v_ctrl = MAX_PWM;
 		}
-		else if (v_ctrl < MIN_PWM)
+		else if ((v_ctrl > 0 && v_ctrl < MIN_PWM) || (v_ctrl < 0 && -v_ctrl < MIN_PWM))
 		{
 			v_ctrl = MIN_PWM;
 		}
@@ -62,9 +79,8 @@ void main(void)
 			LQ_PWM_SetDuty(PWM2, kPWM_Module_1, kPWM_PwmB, DUTY_MAX);
 		}
 		LQ_SetServoDty(angle_target);
-		system_delay_ms(20);
+		systime.delay_ms(20);
 	}
-	
 }
 
 void uart_rx_interrupt_handler(void)
